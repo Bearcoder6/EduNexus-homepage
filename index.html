@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduNexus 智联教枢 — 把问题、资料与课程收进一个能核对的答案</title>
+<meta name="description" content="MAIR·EduNexus 智联教枢：面向高校学习、教学与校园事务的多智能体工作台。公共事务、知识学习、PPT 制作、算法练习四种模式，回答限定在你提供的资料范围内。">
+<meta property="og:title" content="MAIR·EduNexus 智联教枢">
+<meta property="og:description" content="把问题、资料与课程收进一个能核对的答案。面向高校学习、教学与校园事务的多智能体工作台。">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0B9E88">
+<link rel="stylesheet" href="assets/edunexus-ui.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B9E88'/%3E%3Ccircle cx='20' cy='32' r='7' fill='white'/%3E%3Ccircle cx='44' cy='32' r='7' fill='white'/%3E%3Cpath d='M27 32h10' stroke='white' stroke-width='3.5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<!-- 字体非阻塞加载：先渲染系统字体，字体到位后无闪烁切换（避免 4G 下首屏被字体请求卡住） -->
+<link rel="preload" as="style" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@600;700;900&amp;family=Noto+Sans+SC:wght@300;400;500;700&amp;display=swap">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@600;700;900&amp;family=Noto+Sans+SC:wght@300;400;500;700&amp;display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@600;700;900&amp;family=Noto+Sans+SC:wght@300;400;500;700&amp;display=swap"></noscript>
+<!-- 首屏主图提前拉取，缩短 LCP -->
+<style>
+/* ============================================================
+   MAIR·EduNexus 智联教枢 — 产品介绍主页 v4
+   设计令牌 / Design Tokens
+   ============================================================ */
+:root{
+  --brand:#0B9E88;
+  --brand-deep:#087A6A;
+  --brand-soft:#E3F5F0;
+  --brand-tint:#F0FAF7;
+  --ink:#13263B;
+  --ink-soft:#44586C;
+  --ink-faint:#71839A;
+  --paper:#F7FAF9;
+  --card:#FFFFFF;
+  --line:#E3ECE9;
+  --purple:#7B6CE8;
+  --blue:#3D8FE0;
+  --amber:#E08A3C;
+  --font-display:"Noto Serif SC","Songti SC","SimSun",serif;
+  --font-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  --radius:20px;
+  --shadow:0 10px 34px rgba(19,38,59,.07);
+  --shadow-lg:0 24px 60px rgba(19,38,59,.12);
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-body);color:var(--ink)!important;background-color:var(--paper)!important;background-image:url('assets/images/site-paper-field.jpg')!important;background-position:center top!important;background-size:cover!important;background-attachment:fixed!important;background-repeat:no-repeat!important;line-height:1.75;font-weight:400;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+section{scroll-margin-top:84px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.icon{width:1.25em;height:1.25em;display:inline-block;vertical-align:-.22em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ============ 顶部导航 ============ */
+.nav{position:sticky;top:0;z-index:50;background:rgba(247,250,249,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(19,38,59,.06)}
+.nav-inner{display:flex;align-items:center;gap:26px;height:68px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:17px;letter-spacing:.01em}
+.brand-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#12B49C,#0B9E88);display:grid;place-items:center;color:#fff;flex:none;box-shadow:0 6px 16px rgba(11,158,136,.35)}
+.brand-mark svg{width:20px;height:20px;stroke-width:2}
+.brand-sub{color:var(--ink-faint);font-size:12px;font-weight:500;display:block;letter-spacing:.06em;font-style:normal}
+.nav-links{display:flex;align-items:center;gap:24px;margin-left:auto;font-size:15px;color:var(--ink-soft)}
+.nav-links a{transition:color .2s}
+.nav-links a:hover{color:var(--brand)}
+.nav-login{color:var(--ink);font-weight:600}
+.nav-login:hover{color:var(--brand-deep)!important}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;font-size:14.5px;font-weight:600;transition:background .2s,transform .2s;margin-left:2px}
+.nav-cta:hover{background:var(--brand-deep);transform:translateY(-1px);color:#fff!important}
+.experience-menu{position:relative;display:inline-flex;z-index:30}
+.experience-trigger{cursor:pointer}
+.experience-options{position:absolute;top:calc(100% + 10px);right:0;display:none;width:268px;padding:8px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.97);box-shadow:0 18px 44px rgba(19,38,59,.16);backdrop-filter:blur(14px)}
+.experience-menu.is-open .experience-options{display:grid;gap:4px}
+.experience-option{display:grid;gap:3px;padding:12px 13px;border-radius:11px;color:var(--ink);transition:background .18s,transform .18s}
+.experience-option:hover{background:var(--paper);color:var(--ink);transform:translateY(-1px)}
+.experience-option strong{font-size:14px;font-weight:700}
+.experience-option span{font-size:12px;color:var(--ink-faint);line-height:1.45}
+.hero-ctas .experience-options{left:0;right:auto}
+.nav-toggle{display:none;background:none;border:1px solid var(--line);border-radius:10px;padding:8px 11px;cursor:pointer;color:var(--ink);margin-left:auto}
+@media(max-width:920px){
+  .nav-links,.nav-cta,.nav-links .experience-menu{display:none}
+  .nav-toggle{display:inline-flex}
+  .nav-links.open{display:flex;position:absolute;top:68px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:4px;background:#fff;border-bottom:1px solid var(--line);padding:14px 28px 18px;box-shadow:var(--shadow)}
+  .nav-links.open a{width:100%;padding:10px 0;border-bottom:1px dashed var(--line);font-size:16px}
+  .nav-links.open .experience-menu{display:inline-flex;margin-top:14px}
+  .nav-links.open .experience-menu .experience-trigger{display:inline-flex}
+  .nav-links.open .experience-options{top:calc(100% + 6px);left:0;right:auto}
+  .nav-links.open .nav-login{display:flex;width:100%;padding:10px 0;border-bottom:1px dashed var(--line);font-size:16px;justify-content:flex-start}
+}
+
+/* ============ 首屏 Hero ============ */
+.hero{position:relative;overflow:hidden;padding:96px 0 90px;background:linear-gradient(90deg,rgba(247,250,249,.94),rgba(247,250,249,.68)),url('assets/images/site-paper-field.jpg') center/cover no-repeat}
+.hero::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(19,38,59,.055) 1px,transparent 1px);background-size:26px 26px;mask-image:linear-gradient(180deg,rgba(0,0,0,.5),transparent 78%);-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.5),transparent 78%);pointer-events:none}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.02fr .98fr;gap:56px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12.5px;font-weight:700;letter-spacing:.22em;color:var(--brand-deep);text-transform:uppercase;margin-bottom:22px}
+.eyebrow::before{content:"";width:26px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--brand),transparent)}
+.hero h1{font-family:var(--font-display);font-weight:900;font-size:clamp(2.7rem,5.2vw,4.35rem);line-height:1.12;letter-spacing:.005em;color:var(--ink)}
+.hero h1 .zh{display:block;font-size:.6em;font-weight:700;color:var(--brand-deep);margin-top:12px;letter-spacing:.14em;font-style:normal}
+.hero-slogan{font-family:var(--font-display);font-size:clamp(1.18rem,2vw,1.5rem);font-weight:600;color:var(--ink);margin-top:24px;line-height:1.5}
+.hero-slogan em{font-style:normal;color:var(--brand);border-bottom:3px solid var(--brand-soft)}
+.hero-sub{color:var(--ink-soft);font-size:clamp(.98rem,1.35vw,1.08rem);margin-top:16px;max-width:52ch}
+.hero-sub b{color:var(--ink);font-weight:700}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
+.btn{display:inline-flex;align-items:center;gap:9px;border-radius:999px;padding:13px 26px;font-size:15.5px;font-weight:600;transition:transform .2s var(--ease),box-shadow .2s,background .2s;border:0;cursor:pointer;font-family:var(--font-body)}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-primary:hover{background:var(--brand-deep);transform:translateY(-2px);box-shadow:0 12px 28px rgba(11,158,136,.28)}
+.btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn-ghost:hover{border-color:var(--brand);color:var(--brand-deep);transform:translateY(-2px);box-shadow:var(--shadow)}
+.hero-note{margin-top:16px;font-size:13px;color:var(--ink-faint);display:flex;align-items:center;gap:8px}
+.hero-note .icon{width:16px;height:16px;color:var(--brand)}
+
+/* 角色入口：首屏直接说明「谁用、得到什么」；点击在原位展开，不跳转 */
+.role-entries{display:flex;flex-direction:column;gap:10px;margin-top:26px;max-width:460px}
+.role-entry{background:rgba(255,255,255,.78);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(6px);transition:border-color .22s var(--ease),box-shadow .22s var(--ease)}
+.role-entry.is-open{border-color:#BFE0D8;box-shadow:0 12px 30px rgba(11,158,136,.13)}
+.re-head{display:flex;align-items:center;gap:13px;padding:13px 15px;width:100%;background:none;border:0;font-family:inherit;text-align:left;cursor:pointer;border-radius:14px}
+.re-ico{flex:none;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand-deep)}
+.re-ico .icon{width:20px;height:20px}
+.role-entry[data-role="teacher"] .re-ico{background:#EAF1FD;color:#2F6FB5}
+.role-entry[data-role="staff"] .re-ico{background:#F0EDFD;color:#5B4FBF}
+.re-body{flex:1;min-width:0}
+.re-body b{display:block;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.3}
+.re-body span{display:block;font-size:12.5px;color:var(--ink-faint);margin-top:3px;line-height:1.5}
+.re-go{flex:none;width:16px;height:16px;color:var(--ink-faint);transition:transform .28s var(--ease),color .22s var(--ease)}
+.role-entry.is-open .re-go{transform:rotate(90deg);color:var(--brand)}
+.re-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s var(--ease)}
+.role-entry.is-open .re-panel{grid-template-rows:1fr}
+.re-panel-in{overflow:hidden}
+.re-panel-body{padding:0 15px 15px 66px;border-top:1px solid transparent}
+.role-entry.is-open .re-panel-body{border-top-color:var(--line)}
+.re-cap{font-size:12px;font-weight:700;color:var(--brand-deep);letter-spacing:.03em;margin:13px 0 9px}
+.re-list{display:grid;gap:7px;margin:0;padding:0;list-style:none}
+.re-list li{position:relative;padding-left:15px;font-size:13px;color:var(--ink-soft);line-height:1.65}
+.re-list li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:#A9DCCF}
+.re-list li b{font-weight:600;color:var(--ink)}
+.re-bound{margin-top:11px;font-size:12px;color:var(--ink-faint);line-height:1.6;display:flex;gap:7px}
+.re-bound .icon{width:13px;height:13px;flex:none;color:var(--brand);margin-top:2.5px}
+@media(max-width:560px){.role-entries{max-width:none}.re-panel-body{padding-left:15px}}
+
+/* Hero 界面框架 */
+.hero-visual{position:relative;min-width:0}
+.hero-grid{display:flex;flex-direction:column;gap:42px;align-items:stretch}
+.hero-visual{order:0;width:100%;margin:0}
+.hero-copy{display:contents}
+.hero-heading{order:0;width:100%;text-align:left}
+.hero-details{order:2;width:100%;max-width:780px;align-self:flex-start;text-align:left;padding-top:2px}
+.hero-visual{order:1}
+.hero-copy .hero-sub{max-width:52ch}
+.hero-copy .hero-ctas{justify-content:flex-start}
+.hero-copy .hero-note{justify-content:flex-start}
+.hero-copy .role-entries{display:none}
+.hero-copy .eyebrow{margin-bottom:18px}
+.hero-copy .hero-slogan{margin-top:18px}
+.hero-visual .browser{width:100%}
+.hero>.wrap{max-width:1420px;padding-left:32px;padding-right:32px}
+.hero-visual .real-platform-toolbar{display:none}
+.hero-visual .real-platform-window{min-height:860px;border:0;border-radius:0;box-shadow:none;background:transparent}
+.hero-visual .real-platform-viewport{height:820px;border-radius:0;background:transparent}
+.hero-visual .hero-showcase-slot{height:100%;border-radius:0}
+.hero-visual .hero-showcase-slot iframe{display:block;width:100%;height:100%;border:0}
+.browser{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-lg);overflow:hidden}
+.browser-bar{display:flex;align-items:center;gap:10px;padding:13px 16px;background:#FBFDFC;border-bottom:1px solid var(--line)}
+.bb-dots{display:flex;gap:6px}
+.bb-dots i{width:10px;height:10px;border-radius:50%;background:#DCE7E3}
+.bb-dots i:first-child{background:#F2B8A5}
+.bb-dots i:nth-child(2){background:#F2D6A5}
+.bb-url{margin-left:10px;flex:1;max-width:340px;font-size:12.5px;color:var(--ink-faint);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px 14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bb-tag{font-size:11px;font-weight:700;color:var(--brand-deep);background:var(--brand-soft);border-radius:999px;padding:4px 10px;letter-spacing:.08em;flex:none}
+.hero-shot{position:relative}
+.hero-shot img{width:100%;height:auto;display:block}
+.float-chip{position:absolute;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;align-items:center;gap:11px;font-size:13.5px;font-weight:600;color:var(--ink)}
+.float-chip .icon{color:var(--brand)}
+.fc1{top:-22px;left:-26px;animation:floaty 5.5s ease-in-out infinite}
+.fc2{bottom:-20px;right:-20px;animation:floaty 5.5s ease-in-out 1.6s infinite}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@media(max-width:980px){
+  .hero{padding:64px 0 72px}
+  .hero-grid{gap:38px}
+  .hero-visual{order:0;max-width:none;margin:0 auto}
+  .hero-copy{padding-top:0}
+  .fc1{left:6px}
+  .fc2{right:6px}
+}
+@media(max-width:520px){
+  .hero h1{font-size:clamp(1.85rem,9.4vw,2.4rem)}
+  .hero-slogan{font-size:1.15rem}
+}
+
+/* ============ 能力速览条 ============ */
+.cap-strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,255,255,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.cap-inner{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding:22px 0}
+.cap-label{font-size:12.5px;font-weight:700;letter-spacing:.14em;color:var(--ink-faint);margin-right:6px}
+.cap-pill{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink-soft);padding:4px 0;transition:color .2s}
+.cap-pill::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--brand);opacity:.56;flex:none}
+.cap-pill:hover{color:var(--brand-deep)}
+
+/* ============ 通用区块 ============ */
+.section{padding:104px 0}
+.sec-head{max-width:740px;margin-bottom:56px}
+.sec-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12.5px;font-weight:700;letter-spacing:.2em;color:var(--brand-deep);text-transform:uppercase;margin-bottom:16px}
+.sec-eyebrow::before{content:"";width:24px;height:2px;border-radius:2px;background:var(--brand)}
+.sec-head h2{font-family:var(--font-display);font-weight:700;font-size:clamp(1.85rem,3.3vw,2.6rem);line-height:1.26;letter-spacing:.005em}
+.sec-head p{color:var(--ink-soft);margin-top:14px;font-size:1.05rem}
+
+/* ============ 四种模式 ============ */
+.modes-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.mode-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:transform .3s var(--ease),box-shadow .3s;display:flex;flex-direction:column}
+.mode-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+.mode-shot{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.mode-shot img{width:100%;height:auto;transition:transform .5s var(--ease)}
+.mode-card:hover .mode-shot img{transform:scale(1.025)}
+.mode-num{position:absolute;top:16px;left:16px;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.6);border-radius:10px;font-family:var(--font-display);font-weight:700;font-size:13px;padding:5px 11px;color:var(--ink);letter-spacing:.08em;box-shadow:0 4px 14px rgba(19,38,59,.12);z-index:2}
+.mode-body{padding:28px 30px 30px;display:flex;flex-direction:column;flex:1}
+.mode-tag{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--brand-deep);text-transform:uppercase;margin-bottom:10px}
+.mode-tag .icon{width:14px;height:14px}
+.mode-title{display:flex;align-items:center;gap:12px;font-size:1.3rem;font-weight:700}
+.mode-title .icon{width:24px;height:24px;padding:0;border-radius:0;stroke-width:1.75}
+.mt-public .icon{color:var(--purple)}
+.mt-learn .icon{color:var(--blue)}
+.mt-ppt .icon{color:var(--brand)}
+.mt-code .icon{color:var(--amber)}
+.mode-desc{color:var(--ink-soft);margin-top:12px;font-size:15px}
+.mode-out{display:flex;align-items:center;gap:8px;margin-top:16px;font-size:13.5px;font-weight:600;color:var(--brand-deep)}
+.mode-out .icon{width:16px;height:16px}
+.mode-status{margin-top:14px;font-size:12.5px;color:var(--ink-faint);border-top:1px dashed var(--line);padding-top:12px}
+.status-badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--ink-soft);padding:0;margin-right:12px}
+.status-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.72;flex:none}
+.sb-live{color:var(--brand-deep)}
+.sb-wip{color:#A86B1E}
+.sb-plan{color:#6250B8}
+@media(max-width:820px){.modes-grid{grid-template-columns:1fr}}
+
+/* 产品能力改为 Linear 式纵向叙事：每个能力使用一张更大的真实工作台画面，
+   文字与画面交替出现，避免四张小卡片把关键流程压缩成缩略图。 */
+.modes-grid{display:grid;grid-template-columns:1fr;gap:34px}
+.mode-card{display:grid;grid-template-columns:minmax(0,1.42fr) minmax(300px,.78fr);align-items:stretch;border-radius:22px;background:rgba(255,255,255,.78);box-shadow:0 18px 52px rgba(19,38,59,.06)}
+.mode-card:nth-child(even){grid-template-columns:minmax(300px,.78fr) minmax(0,1.42fr)}
+.mode-card:nth-child(even) .mode-shot{order:2;border-right:0;border-left:1px solid var(--line)}
+.mode-card:nth-child(even) .mode-body{order:1}
+.mode-shot{min-height:360px;border-bottom:0;border-right:1px solid var(--line);background:#f5faf8}
+.mode-shot>div{height:100%;min-height:360px}
+.mode-shot img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .6s var(--ease),filter .6s var(--ease)}
+.mode-card:hover .mode-shot img{transform:scale(1.018);filter:saturate(1.04)}
+.mode-body{justify-content:center;padding:46px 44px 48px}
+.mode-title{font-size:clamp(1.45rem,2.4vw,2rem)}
+.mode-desc{font-size:15.5px;line-height:1.8}
+.mode-out{line-height:1.55}
+@media(max-width:820px){.mode-card,.mode-card:nth-child(even){display:flex;flex-direction:column}.mode-card:nth-child(even) .mode-shot{order:0;border-left:0;border-right:0;border-bottom:1px solid var(--line)}.mode-card:nth-child(even) .mode-body{order:0}.mode-shot,.mode-shot>div{min-height:250px}.mode-body{padding:30px 26px 32px}}
+.feature-cinema{padding-top:10px;background:linear-gradient(180deg,rgba(255,255,255,.72) 0%,rgba(244,248,247,.86) 100%)}
+.feature-cinema .sec-head{max-width:900px;margin-bottom:36px}
+.feature-cinema .sec-head p{max-width:780px}
+.feature-cinema-stage{position:relative;max-width:1320px;margin:auto;padding:18px;border:1px solid #dce8e4;border-radius:28px;background:rgba(255,255,255,.74);box-shadow:0 38px 100px rgba(21,57,45,.12),0 8px 24px rgba(21,57,45,.06)}
+.feature-cinema-stage::after{content:"";position:absolute;inset:18px;border-radius:18px;pointer-events:none;box-shadow:inset 0 0 80px rgba(15,35,29,.08)}
+.feature-cinema-stage [data-shot]{border-radius:18px;overflow:hidden;background:#f7faf9;aspect-ratio:1920/945}
+.feature-cinema-stage img{display:block;width:100%;height:auto;min-height:0;object-fit:contain;object-position:center}
+.feature-cinema-caption{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:19px;color:var(--ink-soft);font-size:13px}
+.feature-cinema-caption strong{color:var(--ink);font-weight:700}
+.classroom-grid{display:flex;flex-direction:column;gap:38px;align-items:stretch}
+.classroom-copy{order:0;max-width:960px}
+.classroom-shot{order:1;width:100%;max-width:1320px;margin:auto;border-radius:22px}
+.classroom-shot [data-shot]{border-radius:18px;overflow:hidden;background:#f7faf9;aspect-ratio:1920/945}
+.classroom-shot img{display:block;width:100%;height:auto;min-height:0;object-fit:contain;object-position:center}
+.classroom-copy .feature-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:19px 28px}
+@media(max-width:820px){.feature-cinema-stage{padding:8px;border-radius:18px}.feature-cinema-stage [data-shot],.classroom-shot [data-shot]{aspect-ratio:1920/945}.feature-cinema-stage img,.classroom-shot img{min-height:0}.classroom-copy .feature-list{grid-template-columns:1fr}}
+
+/* ============ 交互演示 · 还原真实工作台 ============ */
+.demo-sec{background:linear-gradient(180deg,rgba(255,255,255,.78) 0%,rgba(242,247,246,.90) 100%);border-top:1px solid var(--line)}
+.demo{margin-top:34px}
+.demo-browser{box-shadow:var(--shadow-lg);overflow:hidden}
+.demo-stage{background:#FAFCFB;height:clamp(360px,52vh,520px);overflow-y:auto;overflow-x:hidden;padding:0 0 4px;position:relative;scrollbar-width:thin;scrollbar-color:#CFDCD8 transparent;scroll-behavior:smooth}
+.demo-stage::-webkit-scrollbar{width:8px}
+.demo-stage::-webkit-scrollbar-thumb{background:#D6E2DE;border-radius:8px;border:2px solid #FAFCFB}
+.demo-stage::-webkit-scrollbar-thumb:hover{background:#C2D3CE}
+.demo-stage::-webkit-scrollbar-track{background:transparent}
+
+/* —— 空态：球体 + 嵌字标题 + 你可能想问 —— */
+.demo-hero{padding:22px 30px 20px;text-align:center;min-height:100%;display:flex;flex-direction:column;justify-content:center;transition:opacity .35s var(--ease),transform .35s var(--ease)}
+.demo-hero.is-gone{display:none}/* 品牌球体：彩色网点 + 多色渐晕 + 不透光暗芯，颜色持续缓慢流动（按参考图还原）
+   分层（自下而上）：① 深底 ② 色团 A/B/C 大幅游移混合 ③ 冷白高光 ④ 网点纹理
+   ⑤ 暗芯（偏心、偏右下、边缘极柔） ⑥ 边缘球感（只压最外圈） */
+/* 球体：参考真实平台——一颗有光泽的虹彩珍珠。
+   受光在左上（过曝冷白），中上部一层青绿，右下偏金琥珀，
+   右上角贴着球缘一小块柔和的暗影（把球体衬出体积），表面光滑、无网点。
+   色相整体缓慢自转，颜色持续流动。 */
+.demo-orb{position:relative;width:124px;height:124px;margin:0 auto 22px;border-radius:50%;isolation:isolate;
+  background:#BFC9C8;overflow:hidden;
+  box-shadow:0 20px 44px rgba(19,38,59,.20),0 3px 10px rgba(19,38,59,.10)}
+.demo-orb i{position:absolute;inset:0;border-radius:50%;display:block;will-change:transform,opacity}
+/* 体色：整体高调明亮的珍珠底，左上冷白、中段青瓷、左下暖米 */
+.demo-orb .o-b{background:
+    radial-gradient(circle at 40% 38%, #ffffff 0%, #f2f8f7 24%, #dcebe7 44%, #bcd8d1 62%, #96bdb5 80%, #6f9a94 94%, #567b76 100%);
+  filter:blur(4px)}
+/* 色相盘：青绿 / 金琥珀 / 藕紫 压在盘面不同方位，整体缓慢自转（screen 叠加，保证明亮通透） */
+.demo-orb .o-a{background:
+    conic-gradient(from 0deg,
+      rgba(34,220,198,.55) 0deg, rgba(63,216,230,.42) 55deg, rgba(159,214,220,.24) 110deg,
+      rgba(236,217,164,.34) 165deg, rgba(240,187,60,.52) 215deg, rgba(216,160,218,.36) 275deg,
+      rgba(110,208,186,.46) 335deg, rgba(34,220,198,.55) 360deg);
+  mix-blend-mode:soft-light;
+  filter:blur(20px);
+  animation:orbSpin 26s linear infinite}
+/* 主光：左上过曝冷白，铺得开一点，像珍珠的高光晕 */
+.demo-orb .o-d{background:
+    radial-gradient(circle at 34% 28%, rgba(255,255,255,1) 0%, rgba(255,255,255,.96) 12%, rgba(250,254,254,.74) 28%, rgba(240,249,248,.34) 46%, transparent 66%);
+  mix-blend-mode:screen;
+  animation:orbLight 13s ease-in-out infinite}
+/* 右上角的暗影月牙：从右上角贴着球缘压进来，范围收窄，越靠球心越透 */
+.demo-orb .o-c{background:
+    radial-gradient(circle at 92% -6%, rgba(10,15,19,.94) 0%, rgba(18,26,30,.80) 14%, rgba(34,46,50,.52) 27%, rgba(72,88,90,.22) 41%, transparent 56%);
+  filter:blur(8px);
+  animation:orbShade 17s ease-in-out infinite}
+/* 球面明暗：只在右下侧回压一点体积感，左上一道极淡的高光边，整体不再压暗球缘 */
+.demo-orb .o-rim{background:
+    radial-gradient(circle at 68% 74%, transparent 54%, rgba(28,42,48,.10) 78%, rgba(16,26,32,.30) 100%);
+  box-shadow:inset 6px 8px 20px rgba(255,255,255,.30), inset -6px -8px 20px rgba(24,38,44,.13)}
+@keyframes orbSpin{to{transform:rotate(360deg)}}
+@keyframes orbLight{0%,100%{transform:translate3d(0,0,0) scale(1);opacity:.94}50%{transform:translate3d(-5%,-5%,0) scale(1.09);opacity:1}}
+@keyframes orbShade{0%,100%{transform:translate3d(0,0,0) scale(1);opacity:.88}50%{transform:translate3d(-8%,7%,0) scale(1.12);opacity:1}}
+/* 轻微浮动（保持原有呼吸感） */
+.demo-orb-inner{position:absolute;inset:0;border-radius:50%;overflow:hidden;animation:orbFloat 7s ease-in-out infinite}
+@keyframes orbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.demo-askline{font-family:var(--font-display);font-weight:700;font-size:clamp(1.4rem,2.6vw,1.95rem);letter-spacing:.01em;display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap}
+.demo-splash-kicker{display:inline-flex;align-items:center;gap:7px;align-self:center;font-size:11.5px;font-weight:700;letter-spacing:.12em;color:var(--brand-deep);text-transform:uppercase;margin-bottom:12px}
+.demo-splash-kicker .icon{width:14px;height:14px}
+/* 关键词标记：保留轻量交互，去掉高饱和的彩色药丸 */
+.demo-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.84);border:1px solid rgba(42,77,67,.2);border-radius:10px;padding:5px 13px 5px 10px;color:var(--ink);font-size:inherit;font-family:inherit;font-weight:700;box-shadow:0 4px 14px rgba(31,61,53,.08);transition:background .45s var(--ease),border-color .45s var(--ease),color .45s var(--ease),box-shadow .45s var(--ease)}
+.demo-pill .icon{width:19px;height:19px;flex:none;transition:opacity .3s var(--ease),transform .3s var(--ease)}
+/* 四个工作方向只保留低饱和边框色 */
+.demo-pill[data-w="explore"]{border-color:rgba(42,110,147,.3);color:#2A6E93}
+.demo-pill[data-w="learn"]{border-color:rgba(47,125,82,.3);color:#2F7D52}
+.demo-pill[data-w="practice"]{border-color:rgba(98,80,184,.3);color:#6250B8}
+.demo-pill[data-w="create"]{border-color:rgba(42,110,147,.3);color:#2A6E93}
+/* 词换位时的一次轻推 */
+.demo-pill b{display:inline-block;transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.demo-pill.is-swap b,.demo-pill.is-swap .icon{opacity:0;transform:translateY(-6px)}
+.demo-subline{color:var(--ink-faint);font-size:14px;margin-top:14px}
+.demo-maybe{margin-top:30px}
+.demo-maybe-label{display:inline-flex;align-items:center;gap:12px;font-size:12.5px;color:var(--ink-faint);margin-bottom:16px}
+.demo-maybe-label::before,.demo-maybe-label::after{content:"";width:34px;height:1px;background:var(--line)}
+.demo-maybe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:left}
+.demo-maybe-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 17px 13px;cursor:pointer;text-align:left;font-family:inherit;transition:border-color .2s,box-shadow .2s,transform .2s}
+.demo-maybe-card:hover{border-color:#BFE0D8;box-shadow:0 8px 24px rgba(11,158,136,.1);transform:translateY(-2px)}
+.demo-maybe-tag{display:block;font-size:12px;font-weight:600;color:var(--brand-deep);margin-bottom:9px}
+.demo-maybe-q{display:block;font-size:14.5px;font-weight:700;line-height:1.55;color:var(--ink);margin-bottom:11px}
+.demo-maybe-hint{display:block;font-size:12px;color:var(--ink-faint);border-top:1px dashed var(--line);padding-top:9px}
+/* 四个真实模式各自主题色：公共事务=品牌青绿 / 知识学习=蓝 / PPT 制作=紫 / 算法练习=琥珀 */
+.demo-maybe-card[data-mode="public"] .demo-maybe-tag{color:var(--brand-deep)}
+.demo-maybe-card[data-mode="learn"] .demo-maybe-tag{color:var(--blue)}
+.demo-maybe-card[data-mode="ppt"] .demo-maybe-tag{color:var(--purple)}
+.demo-maybe-card[data-mode="code"] .demo-maybe-tag{color:var(--amber)}
+.demo-maybe-card[data-mode="public"]:hover{border-color:#BFE0D8;box-shadow:0 8px 24px rgba(11,158,136,.1)}
+.demo-maybe-card[data-mode="learn"]:hover{border-color:#C6DCF3;box-shadow:0 8px 24px rgba(61,143,224,.1)}
+.demo-maybe-card[data-mode="ppt"]:hover{border-color:#D4CDF5;box-shadow:0 8px 24px rgba(123,108,232,.1)}
+.demo-maybe-card[data-mode="code"]:hover{border-color:#EFD6B8;box-shadow:0 8px 24px rgba(224,138,60,.1)}
+
+/* —— 对话区 —— */
+.demo-stream{padding:0 30px;display:flex;flex-direction:column;gap:22px}
+.demo-stream:not(:empty){padding-top:26px;padding-bottom:22px}
+.dm-user{align-self:flex-end;max-width:74%;background:#13263B;color:#EDF3F7;border-radius:16px 16px 5px 16px;padding:12px 16px;font-size:14.5px;line-height:1.6}
+.dm-agent{align-self:stretch;animation:dmIn .4s var(--ease) both}
+.dm-agent.is-resume{margin-top:-8px;padding-top:16px;border-top:1px dashed var(--line)}
+@keyframes dmIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+/* 检索提示：真实平台只在检索期间显示一行「正在理解你的问题并查找相关资料 1.6s」 */
+.dm-status{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink-soft);margin-bottom:15px;
+  transition:opacity .24s var(--ease),transform .24s var(--ease)}
+.dm-status.is-out{opacity:0;transform:translateY(-3px)}
+.dm-status-spin{width:13px;height:13px;flex:none;border-radius:50%;
+  border:1.6px solid rgba(11,158,136,.22);border-top-color:var(--brand-deep);animation:dmSpin .7s linear infinite}
+@keyframes dmSpin{to{transform:rotate(360deg)}}
+.dm-status.is-out .dm-status-spin{animation:none;border-top-color:rgba(11,158,136,.22)}
+.dm-status-time{color:var(--ink-faint);font-variant-numeric:tabular-nums;margin-left:auto}
+.dm-text{font-size:14.5px;line-height:1.78;color:var(--ink)}
+.dm-text p{margin-top:11px}
+.dm-text p:first-child{margin-top:0}
+.dm-note{background:var(--brand-tint);border-left:3px solid #A9DCCF;border-radius:0 10px 10px 0;padding:11px 15px;font-size:13.5px;line-height:1.7;color:var(--ink-soft);margin-top:13px}
+
+.dm-h{font-family:var(--font-display);font-weight:700;font-size:15.5px;color:var(--ink);margin-top:19px;display:flex;align-items:baseline;gap:7px}
+.dm-h .dm-num{font-size:13px;color:var(--brand-deep);font-weight:700}
+.dm-list{margin-top:9px;display:grid;gap:8px}
+.dm-list li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink-soft);line-height:1.7}
+.dm-list li::before{content:"";width:5px;height:5px;border-radius:50%;background:#A9DCCF;flex:none;margin-top:9px}
+.dm-text code,.dm-list code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:12.5px;background:#EEF5F3;border:1px solid #DDEBE7;border-radius:5px;padding:1px 6px;color:#256C5F;white-space:nowrap}
+.dm-code{margin-top:13px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#FBFDFC}
+.dm-code-bar{display:flex;align-items:center;gap:9px;background:#F3F8F7;border-bottom:1px solid var(--line);padding:9px 13px}
+.dm-code-lang{font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--ink-faint);background:#fff;border:1px solid var(--line);border-radius:5px;padding:2px 7px;text-transform:uppercase}
+.dm-code-title{font-size:12.5px;color:var(--ink-faint)}
+.dm-code-copy{margin-left:auto;color:var(--ink-faint);background:transparent;border:0;cursor:pointer;display:grid;place-items:center;padding:3px;border-radius:6px;font-family:inherit}
+.dm-code-copy:hover{background:#E8F0EE;color:var(--ink-soft)}
+.dm-code-copy .icon{width:14px;height:14px}
+.dm-code pre{margin:0;padding:13px 15px;overflow-x:auto}
+.dm-code code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:12.5px;line-height:1.85;color:#2A3F52;background:none;border:0;padding:0;white-space:pre;display:block}
+.dm-code .c{color:#8AA0AE}
+.dm-code .k{color:#0B7F6E;font-weight:600}
+.dm-run{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--brand-deep);background:var(--brand-soft);border-radius:999px;padding:3px 10px;margin-top:12px}
+.dm-run .icon{width:12px;height:12px}
+.dm-ops{display:flex;align-items:center;gap:4px;margin-top:16px;padding-top:13px;border-top:1px dashed var(--line)}
+.dm-op{width:30px;height:30px;display:grid;place-items:center;background:transparent;border:1px solid transparent;border-radius:9px;color:var(--ink-faint);cursor:pointer;transition:background .16s,color .16s,border-color .16s}
+.dm-op:hover{background:#F2F7F6;border-color:var(--line);color:var(--ink-soft)}
+.dm-op .icon{width:14px;height:14px}
+.dm-op.is-on{background:var(--brand-soft);border-color:#BFE0D8;color:var(--brand-deep)}
+/* 抬升卡片：补充信息后继续 */
+.dm-clarify{margin-top:15px;border:1px solid #D9E5E2;border-radius:14px;background:#fff;overflow:hidden;box-shadow:0 10px 30px rgba(19,38,59,.07)}
+.dm-clarify-head{display:flex;align-items:flex-start;gap:11px;padding:17px 19px 0}
+.dm-clarify-head .icon{width:19px;height:19px;color:var(--ink-soft);flex:none;margin-top:2px}
+.dm-clarify-title{font-size:15px;font-weight:700;color:var(--ink)}
+.dm-clarify-desc{font-size:13px;color:var(--ink-faint);line-height:1.65;margin-top:6px}
+.dm-fields{padding:16px 19px 0;display:grid;gap:13px}
+.dm-field label{display:block;font-size:12.5px;font-weight:700;color:var(--ink-soft);margin-bottom:7px;font-family:"SFMono-Regular",Consolas,monospace}
+.dm-field input{width:100%;background:#F6FAF9;border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-family:inherit;font-size:13.5px;color:var(--ink);outline:0;transition:border-color .18s,background .18s}
+.dm-field input:focus{border-color:#A9DCCF;background:#fff}
+.dm-field input::placeholder{color:#A7B6C4}
+.dm-clarify-foot{padding:18px 19px 19px;display:flex;justify-content:flex-end}
+.dm-continue{display:inline-flex;align-items:center;gap:8px;background:var(--brand);color:#fff;border:0;border-radius:11px;padding:11px 19px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:background .18s,transform .18s}
+.dm-continue:hover{background:var(--brand-deep);transform:translateY(-1px)}
+.dm-continue .icon{width:15px;height:15px}
+/* 产物卡 */
+.dm-artifact{margin-top:15px;border:1px solid #D6EAE4;background:#F7FCFA;border-radius:13px;padding:15px 17px}
+.dm-artifact-head{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:700;color:var(--brand-deep)}
+.dm-artifact-head .icon{width:17px;height:17px}
+.dm-artifact-meta{font-size:12.5px;color:var(--ink-faint);margin-top:7px;line-height:1.65}
+.dm-artifact-bar{height:5px;border-radius:99px;background:#DCEFE9;overflow:hidden;margin-top:12px}
+.dm-artifact-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand),#4FC3AC);border-radius:99px;transition:width 1.1s var(--ease)}
+.dm-artifact-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.dm-artifact-go{margin-top:12px;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--brand-deep);background:#fff;border:1px solid #BFE0D8;border-radius:10px;padding:8px 14px;cursor:pointer;font-family:inherit;transition:background .18s,transform .18s}
+.dm-artifact-actions .dm-artifact-go{margin-top:0;text-decoration:none}
+.dm-artifact-go:hover{background:var(--brand-soft);transform:translateY(-1px)}
+.dm-artifact-go .icon{width:14px;height:14px}
+.dm-typing{display:inline-flex;gap:4px;align-items:center;padding:4px 0}
+.dm-typing i{width:6px;height:6px;border-radius:50%;background:#B8CFC9;animation:dmBlink 1.1s infinite}
+.dm-typing i:nth-child(2){animation-delay:.16s}
+.dm-typing i:nth-child(3){animation-delay:.32s}
+@keyframes dmBlink{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-2px)}}
+
+/* —— 身份条件条（仅「探索 · 校园事务」模式显示：其他模式不设年级筛选） —— */
+.demo-cond{border-top:1px solid var(--line);background:#fff;padding:13px 30px 11px;transition:background .3s,opacity .3s}
+.demo-cond.is-hidden{display:none}
+.demo-cond.is-flag{background:#FFFCF4}
+.demo-cond-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.demo-cond-chips{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.dc{font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink-soft);background:#F6FAF9;border:1px solid var(--line);border-radius:999px;padding:5px 13px;cursor:pointer;transition:all .17s}
+.dc:hover{border-color:#BFE0D8;color:var(--brand-deep)}
+.dc.is-active{background:var(--ink);border-color:var(--ink);color:#fff}
+.demo-recheck{margin-left:auto;font-family:inherit;font-size:13px;font-weight:700;color:#fff;background:var(--brand);border:0;border-radius:10px;padding:9px 16px;cursor:pointer;transition:background .18s}
+.demo-recheck:hover{background:var(--brand-deep)}
+.demo-cond-note{font-size:12px;color:var(--ink-faint);line-height:1.6;margin-top:9px}
+.demo-cond-note b{color:var(--ink-soft)}
+
+/* —— 输入区 —— */
+.demo-compose{padding:14px 24px 20px;background:#fff;border-top:1px solid var(--line)}
+.demo-input{background:#F8FBFA;border:1px solid var(--line);border-radius:16px;padding:14px 16px 10px;transition:border-color .2s,box-shadow .2s,background .2s}
+.demo-input:focus-within{background:#fff;border-color:#A9DCCF;box-shadow:0 8px 26px rgba(11,158,136,.11)}
+.demo-readonly-query{display:flex;align-items:center;gap:12px;min-height:52px;padding:0 3px 10px}
+.demo-readonly-query>.icon{width:18px;height:18px;color:var(--brand-deep);flex:none}
+.demo-readonly-copy{display:grid;gap:4px;min-width:0;flex:1;text-align:left}
+.demo-readonly-copy span{font-size:11.5px;color:var(--ink-faint);letter-spacing:.04em}
+.demo-readonly-copy strong{font-size:14px;line-height:1.55;color:var(--ink);font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.demo-auto-tag{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--brand-deep);background:var(--brand-soft);border:1px solid #CBE8DF;border-radius:8px;padding:5px 8px;white-space:nowrap}
+.demo-auto-tag i{width:5px;height:5px;border-radius:50%;background:currentColor;animation:demoPulse 1.5s ease-in-out infinite}
+@keyframes demoPulse{0%,100%{opacity:.45}50%{opacity:1}}
+.demo-input textarea{width:100%;border:0;outline:0;resize:none;font-family:inherit;font-size:14.5px;line-height:1.6;color:var(--ink);background:transparent;max-height:96px;padding:0 0 10px}
+.demo-input textarea::placeholder{color:#A7B6C4}
+.demo-tools{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.demo-modes{display:flex;gap:5px}
+.demo-mode{display:inline-flex;align-items:center;gap:7px;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--ink-soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:7px 13px;cursor:pointer;transition:all .17s}
+.demo-mode:hover{border-color:#BFE0D8;color:var(--brand-deep)}
+.demo-mode .icon{width:15px;height:15px;color:var(--ink-faint);transition:color .17s}
+.demo-mode.is-active{background:var(--brand-soft);border-color:#A9DCCF;color:var(--brand-deep)}
+.demo-mode.is-active .icon{color:var(--brand-deep)}
+.demo-mode[data-mode="public"].is-active{background:var(--brand-soft);border-color:#A9DCCF;color:var(--brand-deep)}
+.demo-mode[data-mode="public"].is-active .icon{color:var(--brand-deep)}
+.demo-mode[data-mode="learn"].is-active{background:#E7F0FB;border-color:#C8DCF2;color:#2A6DB8}
+.demo-mode[data-mode="learn"].is-active .icon{color:#2A6DB8}
+.demo-mode[data-mode="code"].is-active{background:#FBEFE0;border-color:#EDD5B4;color:#B4702A}
+.demo-mode[data-mode="code"].is-active .icon{color:#B4702A}
+.demo-mode[data-mode="ppt"].is-active{background:#EFEBFB;border-color:#D7CFF4;color:#5F4FBE}
+.demo-mode[data-mode="ppt"].is-active .icon{color:#5F4FBE}
+.demo-tools-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.demo-mic{width:34px;height:34px;display:grid;place-items:center;color:var(--ink-faint);border-radius:50%;background:#F2F7F6}
+.demo-tools-note{margin-left:auto;font-size:12px;color:var(--ink-faint);white-space:nowrap}
+.demo-mic,.demo-send{display:none!important}
+.demo-mic .icon{width:16px;height:16px}
+.demo-send{width:38px;height:38px;border-radius:50%;border:0;background:var(--brand);color:#fff;display:grid;place-items:center;cursor:pointer;flex:none;box-shadow:0 4px 14px rgba(11,158,136,.3);transition:background .18s,transform .18s}
+.demo-send:hover{background:var(--brand-deep);transform:translateY(-1px)}
+.demo-send .icon{width:17px;height:17px}
+
+/* —— 底部四模式对话卡（与真实平台一致） —— */
+.demo-four{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px 20px 20px}
+.demo-four-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:15px}
+.demo-four-title{font-size:14.5px;font-weight:700;color:var(--ink)}
+.demo-four-hint{font-size:12px;color:var(--ink-faint);margin-left:auto}
+.demo-four-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.demo-four-card{text-align:left;font-family:inherit;background:#FCFEFD;border:1px solid var(--line);border-radius:12px;padding:14px 14px 13px;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .2s,background .2s}
+.demo-four-card:hover{border-color:#BFE0D8;box-shadow:0 8px 22px rgba(11,158,136,.09);transform:translateY(-2px)}
+.demo-four-card.is-active{background:var(--brand-tint);border-color:#A9DCCF}
+.dfc-ico{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand-deep);margin-bottom:10px}
+.dfc-ico .icon{width:15px;height:15px}
+.dfc-name{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:5px}
+.dfc-blurb{display:block;font-size:11.5px;line-height:1.55;color:var(--ink-faint)}
+.demo-four-card[data-mode="learn"] .dfc-ico{background:#E7F0FB;color:#2A6DB8}
+.demo-four-card[data-mode="ppt"] .dfc-ico{background:#EFEBFB;color:#5F4FBE}
+.demo-four-card[data-mode="code"] .dfc-ico{background:#FBEFE0;color:#B4702A}
+@media(max-width:820px){.demo-four-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.demo-four-grid{grid-template-columns:1fr}}
+.demo-foot{display:block;margin-top:16px;font-size:12.5px;color:var(--ink-faint);line-height:1.65;text-indent:-21px;padding-left:21px}
+.demo-foot .icon{width:14px;height:14px;vertical-align:-2px;margin-right:5px}
+@media(max-width:900px){.demo-maybe-grid{grid-template-columns:1fr}.demo-stage{padding:0}.demo-hero{padding:26px 20px 22px}.demo-stream{padding:0 20px}.demo-stream:not(:empty){padding-top:22px}.demo-cond{padding:12px 20px 10px}.demo-compose{padding:12px 16px 16px}.demo-orb{width:96px;height:96px;margin-bottom:22px}}
+@media(max-width:640px){.dm-user{max-width:100%}.demo-tools-right{gap:8px}.demo-mode span{display:none}.demo-mode{padding:8px 11px}.bb-url{display:none}}
+@media(prefers-reduced-motion:reduce){.demo-orb i,.demo-orb-inner{animation:none}.dm-agent{animation:none}.dm-status-spin{animation:none}}
+
+/* 真实工作台层级的官网只读展示：对应 apps/web 的 BoardUI 工作台结构。 */
+.showcase-app{display:grid;grid-template-columns:148px minmax(0,1fr) 164px;min-height:470px;background:#f6f8f7;color:#21342e;overflow:hidden;border:1px solid #dce8e3}.showcase-sidebar{padding:13px 10px;background:#f3f6f5;border-right:1px solid #e1e9e6}.showcase-brand{display:flex;align-items:center;gap:7px;height:28px;font-size:12px}.showcase-brand-mark{display:grid;place-items:center;width:22px;height:22px;border-radius:7px;background:#168b77;color:#fff}.showcase-brand-mark .icon{width:13px;height:13px}.showcase-collapse{margin-left:auto;color:#91a29b;font-size:10px}.showcase-search,.showcase-new{width:100%;display:flex;align-items:center;gap:7px;border:0;border-radius:7px;background:transparent;color:#7a8d85;font:500 10px var(--font-body);padding:7px 6px;text-align:left;cursor:pointer}.showcase-search:hover,.showcase-new:hover{background:#e7efec;color:#2c6c5d}.showcase-search .icon,.showcase-new .icon{width:12px;height:12px}.showcase-search kbd{margin-left:auto;font:500 9px var(--font-body);color:#9aa9a3}.showcase-nav-label{margin:17px 6px 7px;color:#9baaa4;font-size:9px}.showcase-nav{display:grid;gap:2px}.showcase-mode{display:flex;align-items:center;gap:7px;width:100%;border:0;border-radius:7px;padding:7px;background:transparent;color:#6d8178;font:500 10px var(--font-body);text-align:left;cursor:pointer;transition:.2s}.showcase-mode .icon{width:13px;height:13px}.showcase-mode:hover{background:#e6efeb;color:#286e60;transform:translateX(2px)}.showcase-mode.is-active{background:#d4eee7;color:#147460;font-weight:700}.showcase-history{display:grid;gap:2px}.showcase-history button{width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;border-radius:6px;padding:7px;background:transparent;color:#7b8d86;font:500 9px var(--font-body);text-align:left;cursor:pointer}.showcase-history button:hover,.showcase-history button.is-selected{background:#e7eeeb;color:#2f4d42}.showcase-main{min-width:0;background:#fbfcfb;display:flex;flex-direction:column}.showcase-topbar{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 13px;border-bottom:1px solid #e5ece9}.showcase-breadcrumb{display:flex;align-items:center;gap:5px;min-width:0;color:#9aa9a3;font-size:9px}.showcase-breadcrumb .icon{width:12px;height:12px}.showcase-breadcrumb strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#536a61}.showcase-actions{display:flex;gap:2px}.showcase-actions button,.showcase-artifacts-head button{display:grid;place-items:center;border:0;border-radius:6px;background:transparent;color:#91a29b;padding:5px;cursor:pointer}.showcase-actions .icon,.showcase-artifacts-head .icon{width:13px;height:13px}.showcase-conversation{display:flex;flex:1;flex-direction:column;justify-content:flex-end;gap:10px;padding:18px;min-width:0}.showcase-mode-label{display:flex;align-items:center;gap:6px;color:#719187;font-size:9px}.showcase-mode-label em{margin-left:auto;border:1px solid #cfe5dd;border-radius:999px;padding:3px 6px;color:#4c8a79;background:#f1faf6;font-style:normal;font-size:8px}.showcase-mode-dot{width:6px;height:6px;border-radius:50%;background:#1aa383}.showcase-user-message{align-self:flex-end;max-width:90%;padding:9px 11px;border-radius:12px 12px 4px 12px;background:#e9f3ef;color:#294c40;font-size:11px;line-height:1.6}.showcase-agent-row{display:flex;align-items:center;gap:7px}.showcase-agent-avatar{display:grid;place-items:center;width:22px;height:22px;border-radius:8px;background:#d8f0e8;color:#15806c}.showcase-agent-avatar .icon{width:12px;height:12px}.showcase-agent-row strong{display:block;color:#31594c;font-size:10px}.showcase-agent-row span{display:block;color:#98a9a2;font-size:8px}.showcase-answer{border:1px solid #e1ebe7;border-radius:11px;background:#fff;padding:13px 14px;box-shadow:0 8px 20px rgba(31,65,54,.06)}.showcase-answer h3{font-size:13px;color:#29483e}.showcase-answer p{margin-top:6px;color:#637970;font-size:10px;line-height:1.7}.showcase-answer-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:10px;padding-top:8px;border-top:1px solid #edf2f0;color:#57907f;font-size:8px}.showcase-answer-meta button{border:0;background:transparent;color:#7b9289;font:500 8px var(--font-body);cursor:pointer}.showcase-answer-meta .icon{width:10px;height:10px}.showcase-followup{display:flex;align-items:center;gap:6px;min-height:38px;border:1px solid #dce8e3;border-radius:11px;background:#fff;padding:6px 7px 6px 10px;color:#a0ada8;font-size:9px}.showcase-followup span{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.showcase-followup button{display:grid;place-items:center;width:24px;height:24px;border:0;border-radius:7px;background:transparent;color:#95a59f;cursor:pointer}.showcase-followup .icon{width:12px;height:12px}.showcase-followup .showcase-send{background:#168b77;color:#fff}.showcase-artifacts{padding:13px 10px;background:#f3f6f5;border-left:1px solid #e1e9e6}.showcase-artifacts-head{display:flex;justify-content:space-between}.showcase-artifacts-head strong{display:block;color:#344f44;font-size:11px}.showcase-artifacts-head span{display:block;margin-top:3px;color:#97a8a1;font-size:8px}.showcase-artifact-tabs{display:flex;gap:3px;margin-top:13px;padding-bottom:9px;border-bottom:1px solid #e2ebe7}.showcase-artifact-tabs button{border:0;border-radius:999px;background:transparent;color:#8b9d96;padding:4px 6px;font:500 8px var(--font-body)}.showcase-artifact-tabs button.is-active{background:#d9f0e8;color:#287766}.showcase-artifact-card{margin-top:10px;border:1px solid #dce9e4;border-radius:9px;background:#fff;padding:10px}.showcase-artifact-icon{display:grid;place-items:center;width:24px;height:24px;border-radius:7px;background:#e6f4ef;color:#27806d}.showcase-artifact-icon .icon{width:13px;height:13px}.showcase-artifact-card strong{display:block;margin-top:8px;color:#3c5a4f;font-size:9px}.showcase-artifact-card span{display:block;margin-top:3px;color:#94a59e;font-size:8px}.showcase-artifact-card button{display:inline-flex;align-items:center;gap:4px;margin-top:8px;border:0;background:transparent;color:#2d816d;font:600 8px var(--font-body)}.showcase-artifact-card.muted{background:#f7faf8;box-shadow:none}@media(max-width:1000px){.showcase-app{grid-template-columns:132px minmax(0,1fr)}.showcase-artifacts{display:none}}@media(max-width:640px){.showcase-app{grid-template-columns:1fr;min-height:390px}.showcase-sidebar{display:none}.showcase-main{min-height:390px}}
+.real-platform-window{position:relative;display:block;min-height:470px;border:1px solid rgba(16,37,31,.14);border-radius:18px;overflow:hidden;background:#eef3f1;box-shadow:0 28px 76px rgba(16,37,31,.17),0 4px 16px rgba(16,37,31,.06);transform:translateZ(0)}.real-platform-toolbar{height:39px;display:flex;align-items:center;gap:10px;padding:0 13px;border-bottom:1px solid #d9e5e0;background:linear-gradient(#fff,#f7faf9);font-size:10px;color:#82938d}.real-platform-dots{display:flex;gap:5px}.real-platform-dots i{width:8px;height:8px;border-radius:50%;background:#c1d2ca}.real-platform-dots i:first-child{background:#8dcbbb}.real-platform-url{flex:1}.real-platform-status{border:1px solid #cbe5dc;border-radius:999px;padding:3px 7px;color:#287967;background:#eff9f5;font-size:9px}.real-platform-viewport{position:relative;height:431px;overflow:hidden;background:#f5f8f7}.showcase-app{display:none}@media(max-width:640px){.real-platform-window{min-height:390px}.real-platform-viewport{height:351px}}
+.showcase-react-root{height:100%;width:100%;display:flex;flex-direction:column;overflow:hidden;background:var(--b-bg);font-family:var(--font-sans,Inter,ui-sans-serif,system-ui,sans-serif);font-size:11px;color:var(--b-text)}.showcase-react-modebar{display:flex;gap:4px;padding:6px 8px;border-bottom:1px solid var(--b-border);background:var(--b-panel);overflow:auto}.showcase-react-modebar button{border:0;border-radius:999px;background:transparent;color:var(--b-secondary);padding:4px 8px;font-size:10px;white-space:nowrap}.showcase-react-modebar button.is-active{background:var(--b-accent-soft);color:var(--b-accent);font-weight:600}.showcase-react-layout{display:grid;grid-template-columns:190px minmax(0,1fr) 188px;min-height:0;flex:1;gap:8px;padding:8px;background:var(--b-bg)}.showcase-react-layout .board-sidebar{display:flex!important;width:auto!important;min-width:0!important;border-radius:14px!important;padding:10px!important;box-shadow:0 1px 2px #0000000a!important;font-size:10px!important}.showcase-react-layout .board-sidebar .text-xl{font-size:14px!important}.showcase-react-layout .board-sidebar button{font-size:10px!important}.showcase-react-main{min-width:0;min-height:0;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--b-border);border-radius:14px;background:var(--b-bg)}.showcase-react-header{display:flex;align-items:center;gap:7px;height:34px;flex:none;padding:0 12px;border-bottom:1px solid var(--b-border);color:var(--b-secondary);font-size:10px}.showcase-react-header strong{color:var(--b-text);font-weight:600}.showcase-react-sep{color:#a2b3ac}.showcase-react-status{margin-left:auto;border:1px solid #cbe5dc;border-radius:999px;padding:3px 7px;color:var(--b-accent);font-size:9px}.showcase-react-feed{min-height:0;flex:1;overflow:hidden;padding:14px 16px 8px}.showcase-react-feed .beautiful-ui-feed{gap:10px!important}.showcase-react-feed article{font-size:11px!important}.showcase-react-feed p{font-size:11px!important;line-height:1.55!important}.showcase-react-composer{display:flex;align-items:center;gap:7px;min-height:42px;padding:7px 10px;border-top:1px solid var(--b-border);background:var(--b-panel);color:var(--b-secondary);font-size:9px}.showcase-react-composer strong{min-width:0;flex:1;color:var(--b-text);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.showcase-react-composer i{font-style:normal;color:var(--b-accent);white-space:nowrap}.showcase-react-artifacts{min-width:0;overflow:hidden;border:1px solid var(--b-border);border-radius:14px;background:var(--b-panel);padding:11px}.showcase-react-artifacts>div:first-child{display:flex;flex-direction:column;gap:3px}.showcase-react-artifacts small{color:var(--b-secondary);font-size:9px}.showcase-react-artifacts input{width:100%;height:28px;margin:10px 0 8px;padding:0 9px;border:0;border-radius:999px;background:var(--b-muted);font-size:10px;color:var(--b-secondary)}.showcase-react-pills{display:flex;gap:3px;margin-bottom:9px}.showcase-react-pills button{border:0;border-radius:999px;background:transparent;color:var(--b-secondary);padding:4px 6px;font-size:9px}.showcase-react-pills button.is-active{border:1px solid var(--b-accent);color:var(--b-accent)}.showcase-react-artifacts article{display:flex;flex-direction:column;gap:4px;margin-top:8px;padding:10px;border:1px solid var(--b-border);border-radius:11px;background:var(--b-surface)}.showcase-react-artifacts article b{color:var(--b-accent);font-size:14px}.showcase-react-artifacts article strong{font-size:10px}.showcase-react-artifacts article span{color:var(--b-secondary);font-size:9px;line-height:1.45}.showcase-react-artifacts article button{align-self:flex-start;margin-top:5px;border:0;background:transparent;color:var(--b-accent);font-size:9px}.showcase-react-artifacts article.muted{opacity:.72}@media(max-width:640px){.showcase-react-layout{grid-template-columns:125px minmax(0,1fr);padding:5px;gap:5px}.showcase-react-artifacts{display:none}.showcase-react-layout .board-sidebar{padding:7px!important}.showcase-react-feed{padding:10px}.showcase-react-composer{min-height:34px}}
+.real-platform-showcase-viewport{height:431px;padding:0;background:#f5f8f7}
+.demo-production-stage{height:clamp(620px,72vh,860px);padding:0;background:#eef3f1;overflow:hidden}
+.demo-production-frame{display:block;width:100%;height:100%;border:0;background:#fff}
+.demo-legacy-hook{position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none}
+.hero-showcase-slot{height:100%;overflow:hidden}
+.hero-showcase-app{display:grid!important;min-height:100%;height:100%;border:0;border-radius:0;box-shadow:none}
+.showcase-react-empty-layout{grid-template-columns:190px minmax(0,1fr);gap:8px}.showcase-react-empty-main{min-width:0;min-height:0;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--b-border);border-radius:14px;background:var(--b-bg)}.showcase-react-empty-center{min-height:0;flex:1;display:flex;flex-direction:column;justify-content:center;overflow:hidden;background:var(--b-bg)}.showcase-react-empty-center>.flex.flex-col.items-center{min-height:0;flex:1;justify-content:center;padding:18px 24px 8px}.showcase-react-empty-center>.w-full.shrink-0{padding-top:8px}.showcase-react-empty-center [aria-labelledby='conversation-mode-guide-title']{box-shadow:none}
+.hero-visual .showcase-react-root h1{font-family:var(--font-sans,Inter,ui-sans-serif,system-ui,sans-serif)!important;font-size:20px!important;line-height:1.4!important;letter-spacing:normal!important;font-weight:500!important;color:var(--b-text)!important;margin:32px 0 0!important}.hero-visual .showcase-react-root p{font-family:var(--font-sans,Inter,ui-sans-serif,system-ui,sans-serif)!important;font-size:14px!important;line-height:1.6!important;letter-spacing:normal!important}.hero-visual .showcase-react-root button{font-family:var(--font-sans,Inter,ui-sans-serif,system-ui,sans-serif)}
+.hero-visual .showcase-react-root{position:absolute!important;inset:0!important;height:100%!important;min-height:0!important}
+.hero-visual .showcase-react-root{flex-direction:row!important}
+
+/* ============ AI 模拟课堂 ============ */
+.classroom{background:rgba(255,255,255,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.classroom-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:56px;align-items:center}
+.classroom-shot{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-lg);background:#fff}
+.classroom-shot img{width:100%;height:auto}
+.classroom-shot figcaption{font-size:12.5px;color:var(--ink-faint);padding:12px 18px;border-top:1px solid var(--line);background:#FBFDFC}
+.feature-list{list-style:none;margin-top:26px;display:grid;gap:18px}
+.feature-list li{display:flex;gap:15px;align-items:flex-start}
+.feature-list .icon{width:22px;height:22px;color:var(--brand);margin-top:3px;flex:none}
+.feature-list strong{display:block;font-size:15.5px;font-weight:700}
+.feature-list span{color:var(--ink-soft);font-size:14px}
+.cr-status{margin-top:30px;display:grid;gap:8px;max-width:560px}
+.cr-status-item{display:grid;grid-template-columns:7px auto minmax(0,1fr);align-items:baseline;gap:0 10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.72);box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 2px 8px rgba(19,38,59,.035)}
+.cr-status-dot{width:7px;height:7px;border-radius:50%;background:var(--ink-faint);box-shadow:0 0 0 3px rgba(113,131,154,.1);align-self:center}
+.cr-status-item[data-state="live"] .cr-status-dot{background:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
+.cr-status-item[data-state="wip"] .cr-status-dot{background:#C7852D;box-shadow:0 0 0 3px #F8EEDC}
+.cr-status-item[data-state="plan"] .cr-status-dot{background:#7567D2;box-shadow:0 0 0 3px #ECE9FB}
+.cr-status-label{font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--ink)}
+.cr-status-detail{font-size:12.5px;color:var(--ink-faint);line-height:1.55}
+@media(max-width:980px){.classroom-grid{grid-template-columns:1fr;gap:36px}}
+
+/* ============ 数字人 & 后台（新增：任务书点名素材承接） ============ */
+/* ============ 开始使用 ============ */
+.start-grid{display:grid;grid-template-columns:1fr;gap:56px;align-items:center;max-width:960px}
+.start-copy h2{font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3vw,2.35rem);line-height:1.3}
+.start-copy>p{color:var(--ink-soft);margin-top:14px;font-size:1.05rem}
+.start-copy .feature-list{margin-top:26px}
+.start-copy .hero-ctas{margin-top:30px}
+.start-shot{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-lg);background:#fff}
+.start-shot img{width:100%;height:auto}
+.start-shot figcaption{font-size:12.5px;color:var(--ink-faint);padding:12px 18px;border-top:1px solid var(--line);background:#FBFDFC}
+@media(max-width:980px){.start-grid{grid-template-columns:1fr;gap:36px}}
+
+/* ============ 应用场景 ============ */
+.scene-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.scene-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 24px;transition:transform .25s var(--ease),box-shadow .25s}
+.scene-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.scene-card .icon{width:30px;height:30px;color:var(--brand);margin-bottom:16px}
+.scene-card .for-tag{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.14em;color:var(--ink-faint);text-transform:uppercase;margin-bottom:8px}
+.scene-card h3{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.scene-card p{font-size:13.5px;color:var(--ink-soft)}
+.scene-card .scene-sub{display:flex;gap:8px;align-items:flex-start;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--ink-faint)}
+.scene-card .scene-sub .icon{width:15px;height:15px;margin:2px 0 0;flex:none;color:var(--brand)}
+@media(max-width:960px){.scene-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.scene-grid{grid-template-columns:1fr}}
+
+/* ============ 证据链 · 使用流程 ============ */
+.chain{position:relative;background:linear-gradient(145deg,#0C2335 0%,#132D44 52%,#10253D 100%);color:#EAF2F6;overflow:hidden}
+.chain::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(680px 360px at 4% 0%,rgba(18,180,156,.22),transparent 64%),
+  radial-gradient(620px 420px at 100% 100%,rgba(107,126,232,.18),transparent 62%),
+  linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:auto,auto,54px 54px,54px 54px;mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.45) 80%,transparent 100%);pointer-events:none}
+.chain .wrap{position:relative}
+.chain .sec-eyebrow{color:#6FE1CB}
+.chain .sec-eyebrow::before{background:linear-gradient(90deg,#6FE1CB,transparent)}
+.chain .sec-head h2{color:#fff}
+.chain .sec-head p{color:#A9BCCB}
+.chain-steps{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:42px;position:relative}
+.chain-step{--step-accent:#65DCC6;position:relative;min-width:0;padding:16px 16px 22px;border:1px solid rgba(206,235,230,.16);border-radius:20px;background:linear-gradient(160deg,rgba(255,255,255,.095),rgba(255,255,255,.035));box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 16px 32px rgba(4,18,30,.14);transition:transform .35s var(--ease),border-color .35s,background .35s,box-shadow .35s}
+.chain-step::before{content:attr(data-step);position:absolute;top:17px;right:16px;color:rgba(221,242,239,.42);font-size:11px;font-weight:700;letter-spacing:.16em;font-variant-numeric:tabular-nums}
+.chain-step::after{content:"";position:absolute;top:43px;right:-13px;width:12px;height:1px;background:linear-gradient(90deg,rgba(111,225,203,.72),rgba(111,225,203,.08));box-shadow:0 0 8px rgba(111,225,203,.26)}
+.chain-step:last-child::after{display:none}
+.chain-step:hover{transform:translateY(-7px);border-color:rgba(111,225,203,.58);background:linear-gradient(160deg,rgba(32,184,157,.18),rgba(255,255,255,.05));box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 22px 40px rgba(4,18,30,.28)}
+.chain-step:nth-child(2){--step-accent:#78B7EE}.chain-step:nth-child(3){--step-accent:#B49BFF}.chain-step:nth-child(4){--step-accent:#8BDCCB}.chain-step:nth-child(5){--step-accent:#F2C478}.chain-step:nth-child(6){--step-accent:#B7C7D9}
+.chain-node{width:54px;height:54px;border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.045));border:1px solid color-mix(in srgb,var(--step-accent) 62%,rgba(255,255,255,.28));display:grid;place-items:center;color:var(--step-accent);margin-bottom:20px;position:relative;z-index:1;box-shadow:0 8px 20px rgba(2,17,29,.2),inset 0 1px 0 rgba(255,255,255,.16);transition:transform .35s var(--ease),background .35s,border-color .35s}
+.chain-node::after{content:"";position:absolute;inset:7px;border:1px solid color-mix(in srgb,var(--step-accent) 38%,transparent);border-radius:11px;opacity:.58}
+.chain-step:hover .chain-node{transform:scale(1.06) rotate(-3deg);background:color-mix(in srgb,var(--step-accent) 20%,rgba(255,255,255,.08));border-color:var(--step-accent)}
+.chain-node .icon{width:22px;height:22px;stroke-width:1.7;position:relative;z-index:1}
+.chain-step h3{font-size:1rem;font-weight:700;color:#fff;margin-bottom:9px;line-height:1.35;letter-spacing:.01em}
+.chain-step p{font-size:12.5px;color:#AFC1CE;line-height:1.7}
+.trust-note{display:flex;gap:14px;align-items:flex-start;margin-top:42px;background:linear-gradient(100deg,rgba(255,255,255,.10),rgba(255,255,255,.045));border:1px solid rgba(206,235,230,.18);border-radius:17px;padding:17px 20px;color:#C8D8E4;font-size:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.trust-note .icon{width:20px;height:20px;color:#6FE1CB;margin-top:3px;flex:none}
+.trust-note b{color:#fff;font-weight:700}
+.chain-sig{display:flex;flex-wrap:wrap;gap:10px 12px;margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,.12)}
+.chain-sig div{display:flex;align-items:center;gap:9px;border:1px solid rgba(206,235,230,.14);border-radius:999px;padding:8px 13px;font-size:13px;font-weight:600;color:#DFEAF0;background:rgba(255,255,255,.045)}
+.chain-sig .icon{color:#6FE1CB;width:18px;height:18px}
+@media(max-width:1024px){
+  .chain-steps{grid-template-columns:repeat(2,1fr);row-gap:18px;column-gap:18px}
+  .chain-step::after{display:none}
+}
+@media(max-width:560px){.chain-steps{grid-template-columns:1fr}}
+
+/* ============ 技术特点 ============ */
+.tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.tech-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px 26px;transition:transform .25s var(--ease),box-shadow .25s,border-color .25s}
+.tech-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:#C9E5DC}
+.tech-card .icon{width:26px;height:26px;color:var(--brand);margin-bottom:18px}
+.tech-card h3{font-size:1.08rem;font-weight:700;margin-bottom:9px}
+.tech-card p{font-size:14px;color:var(--ink-soft)}
+@media(max-width:960px){.tech-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.tech-grid{grid-template-columns:1fr}}
+
+/* ============ 开放计划 · 里程碑 ============ */
+.roadmap{background:rgba(255,255,255,.76);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.timeline{position:relative;margin-top:34px;padding:0 8px}
+.tl-line{position:absolute;top:14px;left:8%;right:8%;height:2px;background:repeating-linear-gradient(90deg,#D6E8E2 0 8px,transparent 8px 14px)}
+.tl-grid{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.tl-node{position:relative;background:#fff;border:1px solid var(--line);border-radius:18px;padding:44px 28px 30px;transition:transform .25s var(--ease),box-shadow .25s}
+.tl-node:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.tl-dot{position:absolute;top:0;left:28px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;transform:translateY(-50%);z-index:1;font-size:12px;font-weight:700}
+.tl-dot .icon{width:14px;height:14px;color:#fff}
+.tl-now .tl-dot{background:var(--brand);box-shadow:0 0 0 6px var(--brand-soft)}
+.tl-next .tl-dot{background:var(--blue);box-shadow:0 0 0 6px #E8F2FC}
+.tl-later .tl-dot{background:var(--purple);box-shadow:0 0 0 6px #EEECFB}
+.tl-label{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--ink-faint);text-transform:uppercase;margin-bottom:12px}
+.tl-phase{display:inline-block;font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 10px;margin-left:6px}
+.tl-now .tl-phase{background:var(--brand-soft);color:var(--brand-deep)}
+.tl-next .tl-phase{background:#E8F2FC;color:#2E6FA8}
+.tl-later .tl-phase{background:#EEECFB;color:#5B4FC9}
+.tl-node h3{font-family:var(--font-display);font-size:1.32rem;font-weight:700;margin-bottom:12px}
+.tl-node p{font-size:14.5px;color:var(--ink-soft)}
+/* 后续待实现清单 */
+.rm-pending{margin-top:34px;border:1px dashed #D6E8E2;border-radius:16px;background:#FBFDFC;padding:20px 24px}
+.rm-pending-label{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--ink-faint);text-transform:uppercase;margin-bottom:14px}
+.rm-pending-label::before{content:"";width:20px;height:2px;border-radius:2px;background:linear-gradient(90deg,#B9C9D6,transparent)}
+.rm-pending-list{list-style:none;display:grid;gap:12px}
+.rm-pending-list li{display:flex;gap:11px;align-items:flex-start;font-size:14px;color:var(--ink-soft);line-height:1.7}
+.rm-pending-list .icon{width:17px;height:17px;color:var(--ink-faint);flex:none;margin-top:4px}
+.rm-pending-list b{color:var(--ink);font-weight:700}
+.rm-note{margin-top:44px;display:flex;gap:14px;align-items:flex-start;background:var(--brand-tint);border:1px solid #CBE9E0;border-radius:16px;padding:18px 22px;color:var(--brand-deep);font-size:14.5px}
+.rm-note .icon{width:20px;height:20px;margin-top:3px;flex:none}
+@media(max-width:900px){
+  .tl-line{display:none}
+  .tl-grid{grid-template-columns:1fr;gap:26px}
+  .tl-node{padding-top:34px}
+}
+
+/* ============ 页脚 ============ */
+.footer{background:#0E1F30;color:#9FB4C4;padding:64px 0 40px}
+.footer-top{display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;align-items:flex-start;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:36px}
+.footer-brand{display:flex;align-items:center;gap:12px;font-weight:700;color:#fff;font-size:17px}
+.footer-desc{margin-top:14px;font-size:13.5px;max-width:340px;color:#7E93A8}
+.footer-cols{display:flex;gap:56px;flex-wrap:wrap}
+.footer-cols h4{color:#fff;font-size:13px;font-weight:700;letter-spacing:.12em;margin-bottom:14px}
+.footer-cols a{display:block;font-size:14px;padding:5px 0;transition:color .2s}
+.footer-cols a:hover{color:#5FDCC6}
+.footer-bottom{margin-top:30px;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-size:12.5px;color:#60778C}
+
+/* ============ 动效 ============ */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal-d1{transition-delay:.08s}
+.reveal-d2{transition-delay:.16s}
+.reveal-d3{transition-delay:.24s}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}
+:focus-visible{outline:3px solid rgba(11,158,136,.55);outline-offset:3px;border-radius:4px}
+</style>
+<style id="__dm_no_drag_style__">* { -webkit-user-drag: none !important; }</style><style id="__dm_bindable_badge_style__">[data-sp-bindable="database"]{outline:1px dashed #0088ff;outline-offset:2px;border-radius:4px;}[data-sp-bindable="database"] *{pointer-events:none !important;transition:none !important;animation:none !important;}[data-sp-bindable="database"]{transition:none !important;animation:none !important;}</style></head>
+<body style="">
+
+<!-- ===== 图标符号库（Lucide 风格线性 SVG，内联以保持 GitHub Pages 可独立运行） ===== -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"></path></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16.5H6.5A2.5 2.5 0 0 0 4 22z"></path><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M9 7.5h6M9 11h6"></path></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M9 14h6M9 17.5h4"></path></symbol>
+  <symbol id="i-slides" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M12 16v4M8 20h8M8 8.5l3 2.5 5-4"></path></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 5l-3 14"></path></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M10 8.5v7l5.5-3.5z"></path></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"></path><path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"></path></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-5.2A8.5 8.5 0 1 1 21 11.5z"></path><path d="M8.5 10.5h7M8.5 13.5h4.5"></path></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"></path><path d="M3 12.5l9 5 9-5M3 16.5l9 5 9-5"></path></symbol>
+  <symbol id="i-network" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"></circle><circle cx="5" cy="18" r="2.5"></circle><circle cx="19" cy="18" r="2.5"></circle><path d="M12 7.5v4M5 15.5V14a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v1.5"></path></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8z"></path></symbol>
+  <symbol id="i-filecheck" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M9 14.5l2 2 4-4.5"></path></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2.5"></rect><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3"></path></symbol>
+  <symbol id="i-cycles" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 15.5-6.3M21 12a9 9 0 0 1-15.5 6.3"></path><path d="M18 2.5V7H13.5M6 21.5V17h4.5"></path></symbol>
+  <symbol id="i-grad" viewBox="0 0 24 24"><path d="M4 18L11 5l3 7 2.5-4L20 18z"></path><path d="M8 18h12"></path></symbol>
+  <symbol id="i-teacher" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="12" rx="2"></rect><path d="M4 16l3 4h10l3-4M12 8l1.8 1.2-1 2.3H11.2l-1-2.3zM4 8h16M4 12h16"></path></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path><path d="M16 9h3a1 1 0 0 1 1 1v11M8 7h2M8 11h2M8 15h2M14 7h2M14 11h2M14 15h2"></path></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"></circle><path d="M3.5 20a5.5 5.5 0 0 1 11 0"></path><path d="M16 5.5a3.5 3.5 0 0 1 0 6.6M17.5 14.8a5.5 5.5 0 0 1 3 5.2"></path></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"></circle><path d="M4.5 20a7.5 7.5 0 0 1 15 0"></path></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="7" rx="2"></rect><rect x="3" y="13" width="18" height="7" rx="2"></rect><path d="M7 7.5h.01M7 16.5h.01M11 7.5h4M11 16.5h4"></path></symbol>
+  <symbol id="i-version" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"></path><path d="M3 12.5l9 5 9-5M3 16l9 5 9-5"></path><circle cx="12" cy="8" r="1.6"></circle></symbol>
+  <symbol id="i-avatar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2.5"></rect><path d="M8 21h8"></path><circle cx="12" cy="9" r="2"></circle><path d="M8.5 15a3.5 3.5 0 0 1 7 0"></path></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.2-2.9 7.3-7 9-4.1-1.7-7-4.8-7-9V6z"></path><path d="M9 12l2 2 4-4.5"></path></symbol>
+  <symbol id="i-voice" viewBox="0 0 24 24"><path d="M11 5.5 6.5 9H3v6h3.5L11 18.5z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"></path></symbol>
+  <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5"></path><path d="M5.5 11.5 12 5l6.5 6.5"></path></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"></path></symbol>
+  <symbol id="i-thumb-up" viewBox="0 0 24 24"><path d="M7 22V10l4.5-7a2.5 2.5 0 0 1 3.4 3.1L13.5 10H19a2 2 0 0 1 2 2.4l-1.3 6A2 2 0 0 1 17.7 20H7z"></path><path d="M7 10H4v12h3"></path></symbol>
+  <symbol id="i-thumb-down" viewBox="0 0 24 24"><path d="M17 2v12l-4.5 7a2.5 2.5 0 0 1-3.4-3.1L10.5 14H5a2 2 0 0 1-2-2.4l1.3-6A2 2 0 0 1 6.3 4H17z"></path><path d="M17 14h3V2h-3"></path></symbol>
+  <symbol id="i-redo" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.4-5.7"></path><path d="M20 4v4.6h-4.6"></path></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M9.4 9.2a2.7 2.7 0 1 1 3.5 2.6c-.7.3-.9.8-.9 1.5v.4"></path><path d="M12 17.2h.01"></path></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9.5 12 15.5 18 9.5"></path></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"></path></symbol>
+
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"></path></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"></rect><circle cx="8.5" cy="9.5" r="1.8"></circle><path d="M4 17l5-4.5 4 3.5 3-2.5 4 3.5"></path></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3.5 7.5h6l2 2h9v8.5a2 2 0 0 1-2 2h-15a2 2 0 0 1-2-2v-8.5a2 2 0 0 1 2-2Z"></path><path d="M2.5 10h18"></path></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"></path></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.2"></circle><circle cx="6" cy="12" r="2.2"></circle><circle cx="18" cy="19" r="2.2"></circle><path d="m8 11 8-5M8 13l8 5"></path></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.3" fill="currentColor" stroke="none"></circle><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"></circle><circle cx="19" cy="12" r="1.3" fill="currentColor" stroke="none"></circle></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M19 8a7.5 7.5 0 1 0 1.2 7.1"></path><path d="M19 4v4h-4"></path></symbol>
+
+</svg>
+
+<!-- ===== 导航 ===== -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#hero" aria-label="MAIR·EduNexus 智联教枢 首页">
+      <span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#i-network"></use></svg></span>
+      <span>MAIR·EduNexus<em class="brand-sub">智联教枢</em></span>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="主导航">
+      <a href="#demo">产品体验</a>
+      <a href="#modes">产品功能</a>
+      <a href="#classroom">AI 模拟课堂</a>
+      <a href="#scenes">应用场景</a>
+      <a href="#workflow">使用流程</a>
+      <a href="#tech">技术特点</a>
+      <a href="#roadmap">开放计划</a>
+      <div class="experience-menu" data-experience-menu>
+        <button class="nav-cta experience-trigger" type="button" aria-haspopup="menu" aria-expanded="false">立即体验<svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></button>
+        <div class="experience-options" role="menu" aria-label="选择体验入口">
+          <a class="experience-option" role="menuitem" href="http://222.20.95.156:41448/" target="_blank" rel="noopener"><strong>校园正式版</strong><span>仅限华科校园网访问</span></a>
+          <a class="experience-option" role="menuitem" href="https://judge.edunexus.vip/" target="_blank" rel="noopener"><strong>校外测试版</strong><span>用于校外网络测试使用</span></a>
+        </div>
+      </div>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="展开菜单" aria-expanded="false">
+      <svg class="icon" style="width:22px;height:22px" aria-hidden="true"><use href="#i-menu"></use></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<!-- ===== 首屏 Hero ===== -->
+<section class="hero" id="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <div class="hero-heading">
+        <span class="eyebrow">MAIR@HUST · 校园网内测</span>
+        <h1>MAIR·EduNexus<em class="zh">智联教枢</em></h1>
+        <p class="hero-slogan">把问题、资料与课程<br>收进一个<em>能核对的答案</em></p>
+      </div>
+      <div class="hero-details">
+      <p class="hero-sub" style="cursor: text;">面向高校学习、教学与校园事务的<b>多智能体工作台</b>。课程问答、事务咨询、PPT 制作、算法练习与 AI 模拟课堂，从一句自然语言开始——回答限定在你提供的课程资料与校园官方文件内，每一步都可核对。</p>
+      <div class="hero-ctas">
+        <div class="experience-menu" data-experience-menu>
+          <button class="btn btn-primary experience-trigger" type="button" aria-haspopup="menu" aria-expanded="false">立即体验<svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></button>
+          <div class="experience-options" role="menu" aria-label="选择体验入口">
+            <a class="experience-option" role="menuitem" href="http://222.20.95.156:41448/" target="_blank" rel="noopener"><strong>校园正式版</strong><span>仅限华科校园网访问</span></a>
+            <a class="experience-option" role="menuitem" href="https://judge.edunexus.vip/" target="_blank" rel="noopener"><strong>校外测试版</strong><span>用于校外网络测试使用</span></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 角色入口：点击在原位展开「这个角色能做什么」，不跳转到别处 -->
+      <div class="role-entries" id="roleEntries">
+        <div class="role-entry" data-role="student">
+          <button type="button" class="re-head" aria-expanded="false">
+            <span class="re-ico"><svg class="icon" aria-hidden="true"><use href="#i-grad"></use></svg></span>
+            <span class="re-body"><b>我是学生</b><span>问课程、写代码、做自测，一次问到底</span></span>
+            <svg class="icon re-go" aria-hidden="true"><use href="#i-chevron"></use></svg>
+          </button>
+          <div class="re-panel"><div class="re-panel-in"><div class="re-panel-body">
+            <p class="re-cap">这个角色能做什么</p>
+            <ul class="re-list">
+              <li><b>课程问答与资料解读</b>：围绕你指定的课程资料提问，结论逐条回到原文位置</li>
+              <li><b>AI 笔记、自测题与学习路线</b>：问答沉淀成笔记与复习卡，按目标排出学习顺序</li>
+              <li><b>编程题解题与代码讲解</b>：解题、讲代码、实验排错，代码在沙箱里跑过再给结论</li>
+              <li><b>AI 模拟课堂、个人资料空间</b>：和虚拟师生对话练习，个人的会话、附件与笔记单独存放</li>
+            </ul>
+            <p class="re-bound"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>只能访问被授权的课程资料与自己上传的个人资料，看不到其他用户的内容。</p>
+          </div></div></div>
+        </div>
+
+        <div class="role-entry" data-role="teacher">
+          <button type="button" class="re-head" aria-expanded="false">
+            <span class="re-ico"><svg class="icon" aria-hidden="true"><use href="#i-teacher"></use></svg></span>
+            <span class="re-body"><b>我是教师 / 助教</b><span>课件、讲稿、Quiz 生成，问题沉淀成资产</span></span>
+            <svg class="icon re-go" aria-hidden="true"><use href="#i-chevron"></use></svg>
+          </button>
+          <div class="re-panel"><div class="re-panel-in"><div class="re-panel-body">
+            <p class="re-cap">这个角色能做什么</p>
+            <ul class="re-list">
+              <li><b>课件、教案与讲稿生成</b>：从课程资料出发生成教学内容与演示文稿，逐页可改</li>
+              <li><b>Quiz、作业说明与实验指导</b>：按章节出题与说明，可替换为你的课程风格</li>
+              <li><b>课程资料治理</b>：管理课程资料的结构与版本，补齐缺口、修订过时内容</li>
+              <li><b>学生问题洞察与教学分析看板</b>：看到高频困惑、章节难点与实验错误热点</li>
+              <li><b>问题沉淀与答疑运营（助教）</b>：学生问题去标识化、聚类去重，形成 FAQ 候选、误区库与典型错误库</li>
+            </ul>
+            <p class="re-bound"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>生成内容与资料改动都需经你确认后才生效，AI 不替代你的最终判断；问题沉淀不公开学生隐私、不直接改课程资料。</p>
+          </div></div></div>
+        </div>
+
+        <div class="role-entry" data-role="staff">
+          <button type="button" class="re-head" aria-expanded="false">
+            <span class="re-ico"><svg class="icon" aria-hidden="true"><use href="#i-building"></use></svg></span>
+            <span class="re-body"><b>我是公共事务人员</b><span>政策文件与办事流程，维护一次，回答处处一致</span></span>
+            <svg class="icon re-go" aria-hidden="true"><use href="#i-chevron"></use></svg>
+          </button>
+          <div class="re-panel"><div class="re-panel-in"><div class="re-panel-body">
+            <p class="re-cap">这个角色能做什么</p>
+            <ul class="re-list">
+              <li><b>政策文件维护</b>：把学生手册、培养方案、奖助与办事流程整理为可检索的知识库</li>
+              <li><b>事务知识库与流程问答维护</b>：持续更新问答范围与口径，保证前后一致</li>
+              <li><b>高频事务统计</b>：看到学生最常问什么，据此补充说明或调整流程</li>
+            </ul>
+            <p class="re-bound"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>回答只能引用已发布生效的政策文件，不覆盖在校外或未生效的版本。</p>
+          </div></div></div>
+        </div>
+      </div>
+
+      <p class="hero-note"><svg class="icon" aria-hidden="true"><use href="#i-user"></use></svg>使用学校账号进入，对话、文件与产物按账号隔离</p>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <figure class="browser">
+        <div class="browser-bar">
+          <span class="bb-dots"><i></i><i></i><i></i></span>
+          <span class="bb-url">EduNexus 智联教枢 · 统一工作台</span>
+          <span class="bb-tag">内测中</span>
+        </div>
+        <div class="real-platform-window" data-platform-window aria-label="EduNexus 真实前端结构预览">
+          <div class="real-platform-toolbar"><span class="real-platform-dots"><i></i><i></i><i></i></span><span class="real-platform-url">EduNexus · 统一工作台</span><span class="real-platform-status">交互界面预览</span></div>
+          <div class="real-platform-viewport real-platform-showcase-viewport"><div class="hero-showcase-slot" data-hero-showcase aria-label="EduNexus 真实前端结构预览"><iframe src="workspace-preview.html?rev=production-shell" title="EduNexus 真实工作台预览"></iframe></div></div>
+        </div>
+        <div class="showcase-app" data-showcase-app aria-label="EduNexus 统一工作台预览">
+          <aside class="showcase-sidebar"><div class="showcase-brand"><span class="showcase-brand-mark"><svg class="icon"><use href="#i-network"></use></svg></span><strong>EduNexus</strong><span class="showcase-collapse">⌘</span></div><button class="showcase-search" type="button"><svg class="icon"><use href="#i-search"></use></svg><span>快速搜索</span><kbd>⌘K</kbd></button><button class="showcase-new" type="button"><svg class="icon"><use href="#i-plus"></use></svg><span>新建对话</span></button><div class="showcase-nav-label">工作区</div><nav class="showcase-nav"><button class="showcase-mode is-active" type="button" data-showcase-mode="public"><svg class="icon"><use href="#i-building"></use></svg><span>公共事务</span></button><button class="showcase-mode" type="button" data-showcase-mode="learn"><svg class="icon"><use href="#i-book"></use></svg><span>知识学习</span></button><button class="showcase-mode" type="button" data-showcase-mode="ppt"><svg class="icon"><use href="#i-slides"></use></svg><span>PPT 制作</span></button><button class="showcase-mode" type="button" data-showcase-mode="code"><svg class="icon"><use href="#i-code"></use></svg><span>算法练习</span></button></nav><div class="showcase-nav-label">最近对话</div><div class="showcase-history"><button class="is-selected" type="button">离校请假与销假规定</button><button type="button">毕业学分构成咨询</button><button type="button">课程章节结构梳理</button></div></aside>
+          <section class="showcase-main"><header class="showcase-topbar"><div class="showcase-breadcrumb"><svg class="icon"><use href="#i-folder"></use></svg><span>工作区</span><svg class="icon"><use href="#i-chevron-right"></use></svg><strong>新的中心任务对话</strong></div><div class="showcase-actions"><button type="button"><svg class="icon"><use href="#i-share"></use></svg></button><button type="button"><svg class="icon"><use href="#i-more"></use></svg></button></div></header><div class="showcase-conversation"><div class="showcase-mode-label"><span class="showcase-mode-dot"></span><span data-showcase-label>公共事务</span><em>示例会话</em></div><div class="showcase-user-message" data-showcase-question>学生手册里关于离校请假和销假是怎么规定的？</div><div class="showcase-agent-row"><span class="showcase-agent-avatar"><svg class="icon"><use href="#i-network"></use></svg></span><div><strong>公共事务秘书</strong><span>已核验 3 份资料 · 1.8s</span></div></div><article class="showcase-answer" data-showcase-answer><h3>离校请假与销假</h3><p>离校前需要按规定提交请假申请，说明离校时间、事由和预计返校时间。返校后按要求完成销假，逾期未销假需补充说明。</p><div class="showcase-answer-meta"><span><svg class="icon"><use href="#i-check"></use></svg>依据已锁定</span><button type="button"><svg class="icon"><use href="#i-doc"></use></svg>学生手册 · 第 28 页</button></div></article><div class="showcase-followup"><span>继续追问或查看依据</span><button type="button"><svg class="icon"><use href="#i-plus"></use></svg></button><button type="button"><svg class="icon"><use href="#i-voice"></use></svg></button><button type="button" class="showcase-send"><svg class="icon"><use href="#i-arrow"></use></svg></button></div></div></section>
+          <aside class="showcase-artifacts"><div class="showcase-artifacts-head"><div><strong>我的产物</strong><span>当前会话产物</span></div><button type="button"><svg class="icon"><use href="#i-refresh"></use></svg></button></div><div class="showcase-artifact-tabs"><button class="is-active" type="button">全部</button><button type="button">PPT</button><button type="button">学习笔记</button></div><div class="showcase-artifact-card"><div class="showcase-artifact-icon"><svg class="icon"><use href="#i-doc"></use></svg></div><strong>请假办理核对卡</strong><span>依据 · 适用条件 · 办理步骤</span><button type="button">打开预览 <svg class="icon"><use href="#i-arrow"></use></svg></button></div><div class="showcase-artifact-card muted"><div class="showcase-artifact-icon"><svg class="icon"><use href="#i-layers"></use></svg></div><strong>可继续沉淀为笔记</strong><span>回答、来源和追问统一保存</span></div></aside>
+        </div>
+      </figure>
+      <div class="float-chip fc1"><svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg>先锁定资料范围再检索</div>
+      <div class="float-chip fc2"><svg class="icon" aria-hidden="true"><use href="#i-layers"></use></svg>笔记 · PPT · 代码产物沉淀</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 能力速览 ===== -->
+<div class="cap-strip">
+  <div class="wrap cap-inner">
+    <span class="cap-label">一站式能力</span>
+    <span class="cap-pill">课程问答</span>
+    <span class="cap-pill">学习计划</span>
+    <span class="cap-pill">笔记与复习卡</span>
+    <span class="cap-pill">PPT 生成</span>
+    <span class="cap-pill">代码运行验证</span>
+    <span class="cap-pill">OJ 代码可视化</span>
+    <span class="cap-pill">校园事务咨询</span>
+    <span class="cap-pill">AI 模拟课堂</span>
+    <span class="cap-pill">数字人播报</span>
+  </div>
+</div>
+
+<!-- ===== 产品体验 · 只读工作台剧场 ===== -->
+<section class="section demo-sec" id="demo">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-eyebrow">从这里开始</span>
+      <h2>所思，皆有回响</h2>
+      <p>选择一个模式，查看一个已验证案例。</p>
+    </div>
+
+    <div class="demo reveal">
+      <div class="browser demo-browser">
+        <div class="browser-bar">
+          <span class="bb-dots"><i></i><i></i><i></i></span>
+          <span class="bb-url">EduNexus 智联教枢 · 统一工作台</span>
+        </div>
+
+        <div class="demo-stage demo-production-stage" id="demoStage">
+          <iframe class="demo-production-frame" src="demo-workspace-preview.html?mode=public" title="EduNexus 真实工作台四模式体验"></iframe>
+        </div>
+      </div>
+
+      <p class="demo-foot">四个模式共用同一套工作台组件，切换模式后会自动呈现一组代表性工作流，帮助你快速理解每种模式适合处理什么问题。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 四种模式 ===== -->
+<section class="section" id="modes">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-eyebrow">产品功能</span>
+      <h2>四种模式，把一件事回答得更准</h2>
+      <p>公共事务、知识学习、PPT 制作、算法练习，各自封装成一套固定的工作方式：管住该查哪些资料、按什么格式给答案，所以同一个问题每次都能答得具体、答得一致。</p>
+    </div>
+    <div class="modes-grid">
+      <!-- 公共事务 -->
+      <article class="mode-card reveal">
+        <div class="mode-shot">
+          <span class="mode-num">01 · 公共事务</span>
+          <div data-shot="公共事务业务示意图" data-ratio="16:9">
+            <img src="assets/images/feature-public-affairs.png" width="1680" height="945" loading="lazy" decoding="async" alt="公共事务模式业务示意图：政策资料、来源核验与办理步骤形成闭环" onerror="this.closest('[data-shot]').classList.add('is-missing')">
+          </div>
+        </div>
+        <div class="mode-body">
+          <span class="mode-tag"><svg class="icon" aria-hidden="true"><use href="#i-doc"></use></svg>Policy · 制度与流程</span>
+          <h3 class="mode-title mt-public"><svg class="icon" aria-hidden="true"><use href="#i-doc"></use></svg>公共事务</h3>
+          <p class="mode-desc">校园政策、事务咨询与办事指引。基于学生手册、成长手册与培养方案，把政策文件整理成你真正能执行的步骤——需要什么材料、走什么流程、哪些事项要再确认。</p>
+          <p class="mode-out"><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>答案卡固定给出适用对象、政策版本、材料清单与办理步骤</p>
+          <p class="mode-status"><span class="status-badge sb-live">已实现</span>请假 · 专业分流 · 学分认定 · 培养方案等高频事务</p>
+        </div>
+      </article>
+      <!-- 知识学习 -->
+      <article class="mode-card reveal reveal-d1">
+        <div class="mode-shot">
+          <span class="mode-num">02 · 知识学习</span>
+          <div data-shot="知识学习业务示意图" data-ratio="16:9">
+            <img src="assets/images/feature-knowledge-study.png" width="1680" height="945" loading="lazy" decoding="async" alt="知识学习模式业务示意图：课程章节结构、重点内容与复习卡片相互连接" onerror="this.closest('[data-shot]').classList.add('is-missing')">
+          </div>
+        </div>
+        <div class="mode-body">
+          <span class="mode-tag"><svg class="icon" aria-hidden="true"><use href="#i-book"></use></svg>Course · 课程与学习</span>
+          <h3 class="mode-title mt-learn"><svg class="icon" aria-hidden="true"><use href="#i-book"></use></svg>知识学习</h3>
+          <p class="mode-desc">课程问答与长期学习陪伴。先确认本次的课程与资料范围，再逐条按页引用课程资料讲解——概念、例子、易错点分开说清；围绕同一门课连续追问，并按你的目标与时间生成可执行、可调整的学习计划。</p>
+          <p class="mode-out"><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>结论逐条引用资料页码，答案沉淀为笔记与复习卡</p>
+          <p class="mode-status"><span class="status-badge sb-live">已实现</span>课程问答 · 资料解读 · AI 笔记 · 自测题 · 学习计划</p>
+        </div>
+      </article>
+      <!-- PPT 制作 -->
+      <article class="mode-card reveal">
+        <div class="mode-shot">
+          <span class="mode-num">03 · PPT 制作</span>
+          <div data-shot="PPT 制作业务示意图" data-ratio="16:9">
+            <img src="assets/images/feature-ppt-maker.png" width="1680" height="945" loading="lazy" decoding="async" alt="PPT 制作模式业务示意图：结构大纲、页面草图、讲稿与质量检查" onerror="this.closest('[data-shot]').classList.add('is-missing')">
+          </div>
+        </div>
+        <div class="mode-body">
+          <span class="mode-tag"><svg class="icon" aria-hidden="true"><use href="#i-slides"></use></svg>Create · 内容生成</span>
+          <h3 class="mode-title mt-ppt"><svg class="icon" aria-hidden="true"><use href="#i-slides"></use></svg>PPT 制作</h3>
+          <p class="mode-desc">从主题、资料与结构要求生成教学内容与演示文稿。先跟你确认需求，再给出逐页方案（每页目的、信息量、引用与讲稿），确认后才渲染成可继续编辑的 PPTX，最后做页面质量检查——而不是给你一张无法修改的图。</p>
+          <p class="mode-out"><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>可编辑 PPTX，支持页级修改与版本保留</p>
+          <p class="mode-status"><span class="status-badge sb-live">已实现</span>课件 PPT · 教案与讲稿 · 班会 PPT · 汇报 PPT</p>
+        </div>
+      </article>
+      <!-- 算法练习 -->
+      <article class="mode-card reveal reveal-d1">
+        <div class="mode-shot">
+          <span class="mode-num">04 · 算法练习</span>
+          <div data-shot="算法练习业务示意图" data-ratio="16:9">
+            <img src="assets/images/feature-algorithm.png" width="1680" height="945" loading="lazy" decoding="async" alt="算法练习模式业务示意图：代码编辑、执行轨迹、变量状态与测试验证" onerror="this.closest('[data-shot]').classList.add('is-missing')">
+          </div>
+        </div>
+        <div class="mode-body">
+          <span class="mode-tag"><svg class="icon" aria-hidden="true"><use href="#i-code"></use></svg>Practice · 编程训练</span>
+          <h3 class="mode-title mt-code"><svg class="icon" aria-hidden="true"><use href="#i-code"></use></svg>算法练习</h3>
+          <p class="mode-desc">从题目解析到代码实现。C / C++ / Python / Java 四种语言的答案都要先在沙箱里编译运行、跑过可见测试，才标记为「已验证」；结论区分真实判题结果与 AI 辅助分析，不把解释当成实际执行。</p>
+          <p class="mode-out"><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>四语言沙箱运行 · OJ 评测证据 · Python Tutor 代码执行可视化</p>
+          <p class="mode-status"><span class="status-badge sb-live">已实现</span>编程解题 · 代码讲解 · 实验排错 · 可视化调用栈与变量变化 · 错题复盘</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== OJ 代码可视化 · 独立工作区 ===== -->
+<section class="section feature-cinema" id="oj-visualization">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-eyebrow">算法练习 · 独立工作区</span>
+      <h2>代码不是只给答案，还能看见它如何运行</h2>
+      <p>从题库进入 OJ 题目，在同一工作区读题、编辑、运行和提交；切到「代码可视化」，用当前代码与公开样例逐步观察调用栈、变量、对象与引用关系。可视化用于理解过程，最终对错仍以本平台评测为准。</p>
+    </div>
+    <figure class="feature-cinema-stage reveal">
+      <div data-shot="OJ 工作区：代码可视化动画" data-ratio="1920:945">
+        <img src="assets/images/oj-visualization.png" width="1920" height="945" loading="lazy" decoding="async" alt="OJ 工作区：代码可视化页签展示运行步骤、调用栈与变量变化" onerror="this.closest('[data-shot]').classList.add('is-missing')">
+      </div>
+      <figcaption class="feature-cinema-caption"><strong>题目与导师 ↔ 代码可视化</strong><span>公开样例驱动 · 可暂停逐步查看 · 与正式评测结果区分</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== AI 模拟课堂 ===== -->
+<section class="section classroom" id="classroom">
+  <div class="wrap classroom-grid">
+    <div class="classroom-shot reveal">
+      <div data-shot="AI 模拟课堂课件讲解页面" data-ratio="1920:945">
+        <img src="assets/images/ai-classroom.png" width="1920" height="945" loading="lazy" decoding="async" alt="AI 模拟课堂：课件讲解、讲稿、课堂 Agent 与提问区" onerror="this.closest('[data-shot]').classList.add('is-missing')">
+      </div>
+      <figcaption>AI 模拟课堂 · 围绕当前课件页面讲解与追问</figcaption>
+    </div>
+    <div class="classroom-copy reveal reveal-d1">
+      <span class="sec-eyebrow">AI 模拟课堂</span>
+      <h2 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3vw,2.35rem);line-height:1.3">把课件，变成一场能提问的课</h2>
+      <p style="color:var(--ink-soft);margin-top:14px;font-size:1.05rem">选择课件进入课堂，系统绑定这份课件的原文，按页讲解，你可以围绕当前页面随时提问、完成小测，语音与字幕辅助听讲。课堂中的问题、笔记与测验结果，都会回到你的学习记录里。</p>
+      <ul class="feature-list">
+        <li><svg class="icon" aria-hidden="true"><use href="#i-play"></use></svg><div><strong>按页讲解与随堂互动</strong><span>讲解词始终对应当前课件页，支持翻页、提问与 1—2 道随堂小测</span></div></li>
+        <li><svg class="icon" aria-hidden="true"><use href="#i-voice"></use></svg><div><strong>语音播报与字幕同步</strong><span>讲解可用语音朗读，切页时字幕与讲解词同步；网络波动时仍可进入静音课堂，继续翻页、读讲稿、提问</span></div></li>
+        <li><svg class="icon" aria-hidden="true"><use href="#i-chat"></use></svg><div><strong>课堂问答不脱离课件</strong><span>问答限定在当前课件与当前页范围内，优先引用这一页；扩大范围时会在回答中说明依据</span></div></li>
+        <li><svg class="icon" aria-hidden="true"><use href="#i-layers"></use></svg><div><strong>课堂记录持续沉淀</strong><span>课堂提问、答错点与常见误区回流到笔记、问题池与教学洞察</span></div></li>
+      </ul>
+      <div class="cr-status" aria-label="AI 模拟课堂能力状态">
+        <div class="cr-status-item" data-state="live">
+          <span class="cr-status-dot" aria-hidden="true"></span>
+          <strong class="cr-status-label">已实现</strong>
+          <span class="cr-status-detail">逐页讲解 · 字幕 · 随堂提问 · 小测</span>
+        </div>
+        <div class="cr-status-item" data-state="wip">
+          <span class="cr-status-dot" aria-hidden="true"></span>
+          <strong class="cr-status-label">正在完善</strong>
+          <span class="cr-status-detail">语音播报与数字人状态</span>
+        </div>
+        <div class="cr-status-item" data-state="plan">
+          <span class="cr-status-dot" aria-hidden="true"></span>
+          <strong class="cr-status-label">后续适配</strong>
+          <span class="cr-status-detail">更多课件格式与讲义密度</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 开始使用 ===== -->
+<section class="section" id="start">
+  <div class="wrap start-grid">
+    <div class="start-copy reveal">
+      <span class="sec-eyebrow">开始使用</span>
+      <h2>用学校账号进入，学习痕迹归你自己</h2>
+      <p>使用学校账号进入后即可选择场景、上传资料、发起对话。对话、文件与正在编辑的产物都跟你走——换一台设备打开，接着上次的地方继续。</p>
+      <ul class="feature-list">
+        <li><svg class="icon" aria-hidden="true"><use href="#i-user"></use></svg><div><strong>学校账号接入</strong><span>不需要额外注册，用已有的校园身份直接进入</span></div></li>
+        <li><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg><div><strong>内容按账号隔离</strong><span>你的对话、上传的文件与生成的产物，只属于你自己</span></div></li>
+        <li><svg class="icon" aria-hidden="true"><use href="#i-cycles"></use></svg><div><strong>跨设备接着用</strong><span>长任务可以离开，回到任意设备都能恢复进度</span></div></li>
+      </ul>
+      <div class="hero-ctas">
+        <div class="experience-menu" data-experience-menu>
+          <button class="btn btn-primary experience-trigger" type="button" aria-haspopup="menu" aria-expanded="false">立即体验<svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></button>
+          <div class="experience-options" role="menu" aria-label="选择体验入口">
+            <a class="experience-option" role="menuitem" href="http://222.20.95.156:41448/" target="_blank" rel="noopener"><strong>校园正式版</strong><span>仅限华科校园网访问</span></a>
+            <a class="experience-option" role="menuitem" href="https://judge.edunexus.vip/" target="_blank" rel="noopener"><strong>校外测试版</strong><span>用于校外网络测试使用</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 应用场景 ===== -->
+<section class="section" id="scenes">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-eyebrow">应用场景</span>
+      <h2>一个平台，四种角色各有各的用法</h2>
+      <p>学生、教师、助教与公共事务人员，各自看到适合自己的入口与产物。</p>
+    </div>
+    <div class="scene-grid">
+      <div class="scene-card reveal">
+        <svg class="icon" aria-hidden="true"><use href="#i-grad"></use></svg>
+        <span class="for-tag">学生</span>
+        <h3>课程问答与个人学习空间</h3>
+        <p>课程问答、资料解读、AI 笔记、自测题、学习路线、编程解题与实验排错，校园事务也能一并办完；学习过程沉淀为可继续追问的个人资料空间。</p>
+      </div>
+      <div class="scene-card reveal reveal-d1">
+        <svg class="icon" aria-hidden="true"><use href="#i-teacher"></use></svg>
+        <span class="for-tag">教师</span>
+        <h3>课件生成与教学洞察</h3>
+        <p>基于课程资料生成可编辑的课件、教案、讲稿与 Quiz；课件进入 AI 模拟课堂供学生自主预习复习，学生的困惑与误区会汇总成教学洞察。</p>
+        <p class="scene-sub"><svg class="icon" aria-hidden="true"><use href="#i-filecheck"></use></svg>AI 生成的内容不会自动发布，教师审阅确认后才进入课程空间</p>
+      </div>
+      <div class="scene-card reveal reveal-d2">
+        <svg class="icon" aria-hidden="true"><use href="#i-users"></use></svg>
+        <span class="for-tag">助教</span>
+        <h3>问题沉淀与答疑运营</h3>
+        <p>学生问题自动去标识化、聚类去重，形成 FAQ 候选、误区库与典型错误库；高频困惑与实验错误热点一目了然，重复答疑变成可复用的教学资产。</p>
+      </div>
+      <div class="scene-card reveal reveal-d3">
+        <svg class="icon" aria-hidden="true"><use href="#i-building"></use></svg>
+        <span class="for-tag">公共事务人员</span>
+        <h3>政策与事务知识库维护</h3>
+        <p>培养方案、学生手册等政策文件统一接入并分域维护，事务咨询有依据、可核查；高频事务统计帮你看到学生最需要解释的部分。</p>
+        <p class="scene-sub"><svg class="icon" aria-hidden="true"><use href="#i-server"></use></svg>配套管理后台：资料接入、权限配置与版本更新一处管理</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 证据链 · 使用流程 ===== -->
+<section class="section chain" id="workflow">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-eyebrow">使用流程</span>
+      <h2>从一句话，到一份可追溯的成果</h2>
+      <p>每一步都可回看：问题进来，Agent 检索资料、生成结果，过程留在记录里。</p>
+    </div>
+    <div class="chain-steps">
+      <div class="chain-step reveal" data-step="01">
+        <div class="chain-node"><svg class="icon" aria-hidden="true"><use href="#i-spark"></use></svg></div>
+        <h3>选择场景</h3>
+        <p>进入公共事务、知识学习、PPT 制作或算法练习</p>
+      </div>
+      <div class="chain-step reveal reveal-d1" data-step="02">
+        <div class="chain-node"><svg class="icon" aria-hidden="true"><use href="#i-chat"></use></svg></div>
+        <h3>提出问题</h3>
+        <p>用一句话说明目标，或拖入 PDF、PPT 等资料</p>
+      </div>
+      <div class="chain-step reveal reveal-d2" data-step="03">
+        <div class="chain-node"><svg class="icon" aria-hidden="true"><use href="#i-network"></use></svg></div>
+        <h3>专业 Agent 处理</h3>
+        <p>识别意图与资料边界，必要时多 Agent 接力工作</p>
+      </div>
+      <div class="chain-step reveal reveal-d3" data-step="04">
+        <div class="chain-node"><svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg></div>
+        <h3>检索资料与依据</h3>
+        <p>限定课程或事务范围，检索原文并校验适用条件</p>
+      </div>
+      <div class="chain-step reveal reveal-d2" data-step="05">
+        <div class="chain-node"><svg class="icon" aria-hidden="true"><use href="#i-layers"></use></svg></div>
+        <h3>生成结果</h3>
+        <p>得到回答、代码、PPT 或学习产物，并完成质量检查</p>
+      </div>
+      <div class="chain-step reveal reveal-d3" data-step="06">
+        <div class="chain-node"><svg class="icon" aria-hidden="true"><use href="#i-cycles"></use></svg></div>
+        <h3>追问 · 修改 · 沉淀</h3>
+        <p>继续追问、局部修改或复盘，产物进入个人知识空间</p>
+      </div>
+    </div>
+    <div class="trust-note reveal">
+      <svg class="icon" aria-hidden="true"><use href="#i-filecheck"></use></svg>
+      <span><b>回答只基于你的资料。</b>课程与事务回答限定在你提供的课程资料和校园官方文件范围内；资料不足时如实说明边界，不把推测写成事实。</span>
+    </div>
+    <div class="chain-sig reveal">
+      <div><svg class="icon" aria-hidden="true"><use href="#i-filecheck"></use></svg>来源可查</div>
+      <div><svg class="icon" aria-hidden="true"><use href="#i-cycles"></use></svg>过程可追溯</div>
+      <div><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>结果可信赖</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 技术特点 ===== -->
+<section class="section" id="tech">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-eyebrow">技术特点</span>
+      <h2>不是多聊几个 Agent，是把能力连成闭环</h2>
+      <p>你感受到的是可靠、连续、可核查——每个结论都有依据，每个产物都能回访。</p>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card reveal">
+        <svg class="icon" aria-hidden="true"><use href="#i-network"></use></svg>
+        <h3>中心调度，专业分工</h3>
+        <p>中心任务 Agent 负责理解意图、追问缺失信息、拆解任务与调度专业 Agent，不越过边界替它们写专业内容。</p>
+      </div>
+      <div class="tech-card reveal reveal-d1">
+        <svg class="icon" aria-hidden="true"><use href="#i-filter"></use></svg>
+        <h3>资料分域，先定范围再检索</h3>
+        <p>课程资料、公共事务资料、个人资料与产物分域隔离。范围不明确时先请你澄清，不会默认全库乱搜，也不会跨域串用。</p>
+      </div>
+      <div class="tech-card reveal reveal-d2">
+        <svg class="icon" aria-hidden="true"><use href="#i-filecheck"></use></svg>
+        <h3>结论回到检索到的资料</h3>
+        <p>回答建立在本次锁定的课程资料与校园文件之上，并如实标注是否查到对应依据——查不到时明说「暂无可用依据」，不会编造来源。</p>
+      </div>
+      <div class="tech-card reveal">
+        <svg class="icon" aria-hidden="true"><use href="#i-layers"></use></svg>
+        <h3>置信度与不确定性标注</h3>
+        <p>事务核对卡给出置信度与不确定性说明，依据不足时提示补充范围或转人工确认，而不是给一个无法核对的结论。</p>
+      </div>
+      <div class="tech-card reveal reveal-d1">
+        <svg class="icon" aria-hidden="true"><use href="#i-version"></use></svg>
+        <h3>质量自检与返修</h3>
+        <p>引用是否缺失、资料域是否越界、课件是否跑题、代码是否真的跑过，都会在交付前被检查，并给出可执行的返修动作。</p>
+      </div>
+      <div class="tech-card reveal reveal-d2">
+        <svg class="icon" aria-hidden="true"><use href="#i-cycles"></use></svg>
+        <h3>长任务可离开、可恢复</h3>
+        <p>长流程按节点保存进度，中途失败只重跑出错的节点；任务可以离开，回来接着上次的地方继续。</p>
+      </div>
+      <div class="tech-card reveal">
+        <svg class="icon" aria-hidden="true"><use href="#i-play"></use></svg>
+        <h3>代码必须真的跑过</h3>
+        <p>C / C++ / Python / Java 四种语言在沙箱执行，保存语言、输入输出、退出码、耗时与测试结果；没跑过的代码不会写成「已通过」。</p>
+      </div>
+      <div class="tech-card reveal reveal-d1">
+        <svg class="icon" aria-hidden="true"><use href="#i-slides"></use></svg>
+        <h3>产物可编辑、可追溯</h3>
+        <p>课件、笔记、计划、题集与课堂记录都是可下载、可预览、可修改的产物，带版本历史与来源映射，而不是一次性文本。</p>
+      </div>
+      <div class="tech-card reveal reveal-d2">
+        <svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>
+        <h3>权限守卫与人工确认</h3>
+        <p>发布、删除、导出等高风险动作需要你确认后才执行；个人资料默认不共享，记忆可查看、可关闭、可删除。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 开放计划 · 里程碑 ===== -->
+<section class="section roadmap" id="roadmap">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-eyebrow">开放计划</span>
+      <h2>正在从内测走向师生</h2>
+      <p>平台由华中科技大学计算机学院师生共建，当前处于内测阶段，按真实使用反馈逐步开放。</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-line" aria-hidden="true"></div>
+      <div class="tl-grid">
+        <div class="tl-node tl-now reveal">
+          <span class="tl-dot"><svg class="icon" aria-hidden="true"><use href="#i-spark"></use></svg></span>
+          <span class="tl-label">当前阶段<span class="tl-phase">进行中</span></span>
+          <h3>内测与服务器联调</h3>
+          <p>首轮版本已部署上线，面向校园网内测用户开放；正在推进问题优化与各模块服务器联调验收，建立测试反馈闭环。</p>
+        </div>
+        <div class="tl-node tl-next reveal reveal-d1">
+          <span class="tl-dot"><svg class="icon" aria-hidden="true"><use href="#i-teacher"></use></svg></span>
+          <span class="tl-label">下一步<span class="tl-phase">计划中</span></span>
+          <h3>面向老师小范围试用</h3>
+          <p>邀请教师体验课程问答、PPT 生成与 AI 模拟课堂，收集真实教学场景中的反馈并迭代。</p>
+        </div>
+        <div class="tl-node tl-later reveal reveal-d2">
+          <span class="tl-dot"><svg class="icon" aria-hidden="true"><use href="#i-grad"></use></svg></span>
+          <span class="tl-label">后续<span class="tl-phase">计划中</span></span>
+          <h3>根据反馈逐步开放给学生</h3>
+          <p>在稳定与可信基础上，逐步扩大学生开放范围，让 AI 成为每一位大学生的学习伙伴。</p>
+        </div>
+      </div>
+    </div>
+    <div class="rm-pending reveal">
+      <span class="rm-pending-label">后续待实现</span>
+      <ul class="rm-pending-list">
+        <li><svg class="icon" aria-hidden="true"><use href="#i-building"></use></svg><b>公共事务大屏问询</b>：把事务问答部署到学院大屏，供来访与咨询时直接问询</li>
+        <li><svg class="icon" aria-hidden="true"><use href="#i-voice"></use></svg><b>AI 模拟课堂语音播报与数字人</b>：让逐页讲解支持语音朗读与数字人形象</li>
+        <li><svg class="icon" aria-hidden="true"><use href="#i-layers"></use></svg><b>更多课件格式与讲义密度编辑</b>：扩展可解析的课件类型与讲义排版选项</li>
+      </ul>
+    </div>
+    <div class="rm-note reveal">
+      <svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg>
+      <span>平台当前处于内测阶段，界面与能力仍在迭代；回答内容由 AI 生成，请以课程资料与官方文件为准，核实关键事实。</span>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===== 页脚 ===== -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">
+          <span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#i-network"></use></svg></span>
+          <span>MAIR·EduNexus 智联教枢</span>
+        </div>
+        <p class="footer-desc">让问题、资料、课程与学习产物形成可追溯的闭环。面向高校学习、教学与校园事务的多智能体工作台。</p>
+      </div>
+      <div class="footer-cols">
+        <div>
+          <h4>页面导航</h4>
+          <a href="#demo">产品体验</a>
+          <a href="#modes">产品功能</a>
+          <a href="#classroom">AI 模拟课堂</a>
+          <a href="#start">开始使用</a>
+          <a href="#scenes">应用场景</a>
+          <a href="#workflow">使用流程</a>
+          <a href="#tech">技术特点</a>
+          <a href="#roadmap">开放计划</a>
+        </div>
+        <div>
+          <h4>项目信息</h4>
+          <a href="https://github.com/Bearcoder6/HUST-CSAgent" target="_blank" rel="noopener">GitHub 仓库</a>
+          <a href="#hero">回到顶部</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 MAIR@HUST Group · 华中科技大学计算机学院 · v4</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  /* 角色入口：点击在原位展开说明，可再次点击收起；同时只展开一个 */
+  var roleEntries=document.querySelectorAll("#roleEntries .role-entry");
+  roleEntries.forEach(function(box){
+    var head=box.querySelector(".re-head");
+    head.addEventListener("click",function(){
+      var willOpen=!box.classList.contains("is-open");
+      roleEntries.forEach(function(o){
+        o.classList.remove("is-open");
+        var h=o.querySelector(".re-head");
+        if(h) h.setAttribute("aria-expanded","false");
+      });
+      if(willOpen){
+        box.classList.add("is-open");
+        head.setAttribute("aria-expanded","true");
+      }
+    });
+  });
+
+  /* 体验入口：先选择网络环境，再打开对应版本；链接本身保持原生可复制与新窗口打开 */
+  var experienceMenus=document.querySelectorAll("[data-experience-menu]");
+  function closeExperienceMenus(){
+    experienceMenus.forEach(function(menu){
+      menu.classList.remove("is-open");
+      var trigger=menu.querySelector(".experience-trigger");
+      if(trigger) trigger.setAttribute("aria-expanded","false");
+    });
+  }
+  experienceMenus.forEach(function(menu){
+    var trigger=menu.querySelector(".experience-trigger");
+    if(!trigger) return;
+    trigger.addEventListener("click",function(event){
+      event.stopPropagation();
+      var open=!menu.classList.contains("is-open");
+      closeExperienceMenus();
+      if(open){menu.classList.add("is-open");trigger.setAttribute("aria-expanded","true");}
+    });
+  });
+  document.addEventListener("click",closeExperienceMenus);
+  document.addEventListener("keydown",function(event){if(event.key==="Escape") closeExperienceMenus();});
+
+  /* 移动端菜单 */
+  var toggle=document.getElementById("navToggle");
+  var links=document.getElementById("navLinks");
+  toggle.addEventListener("click",function(){
+    var open=links.classList.toggle("open");
+    toggle.setAttribute("aria-expanded",open?"true":"false");
+  });
+  links.addEventListener("click",function(e){
+    if(e.target.closest("a")){links.classList.remove("open");toggle.setAttribute("aria-expanded","false");}
+  });
+
+  /* 滚动显现（尊重减弱动效） */
+  var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var items=document.querySelectorAll(".reveal");
+  if(reduce||!("IntersectionObserver" in window)){
+    items.forEach(function(el){el.classList.add("in");});
+  }else{
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target);}
+      });
+    },{threshold:.12,rootMargin:"0px 0px -6% 0px"});
+    items.forEach(function(el){if(el && el.nodeType===1) io.observe(el);});
+  }
+
+  /* 图片加载失败时，展示「截图占位说明」——保证静态部署无外链也能完整表达内容 */
+  document.querySelectorAll("[data-shot]").forEach(function(box){
+    var img=box.querySelector("img");
+    if(!img) return;
+    function mark(){
+      box.classList.add("is-missing");
+      if(box.querySelector(".shot-ph")) return;
+      var ph=document.createElement("div");
+      ph.className="shot-ph";
+      ph.innerHTML='<span class="shot-ph-icon">'+
+        '<svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span>'+
+        '<b>'+box.getAttribute("data-shot")+'</b>'+
+        '<span class="shot-ph-meta">建议比例 '+box.getAttribute("data-ratio")+' · '+box.getAttribute("data-privacy")+'</span>';
+      box.insertBefore(ph,img);
+      img.style.display="none";
+    }
+    if(img.complete && img.naturalWidth===0){mark();}
+    img.addEventListener("error",mark);
+  });
+
+  /* ==========================================================
+     产品体验 · 只读工作台剧场
+     结构与交互（预设问题 → 步骤 → 回答 → 依据 → 产物预览）按真实产品还原
+     回答内容为预置示例，不发起任何网络请求
+     ========================================================== */
+  if(document.querySelector(".demo-production-frame")) return;
+  var DEMO={
+    public:{
+      word:"探索", name:"公共事务",
+      blurb:"校园事务咨询、政策与办事服务",
+      questions:[
+        {
+          q:"学生手册里关于离校请假和销假是怎么规定的？",
+          lead:"离校前需要完成请假审批，返校后还要在规定时间内办理销假，系统会把两步放在同一张事务卡里展示。",
+          list:["<b>适用对象</b>：需要离校的在校学生，具体适用范围以当前学生手册版本为准",
+                "<b>离校前</b>：填写请假事由、离校时间与返校时间，按审批链提交",
+                "<b>材料要求</b>：根据事由补充情况说明或相关证明，缺失时系统会提示",
+                "<b>返校后</b>：在规定时间内提交销假，逾期需向对应老师说明情况",
+                "<b>回答依据</b>：学生手册中请假、离校与考勤相关章节"],
+          note:"回答会标注适用范围与资料版本；涉及具体审批人和办理时限时，请以当前生效通知为准。",
+        },
+        {
+          q:"2025 级计算机专业毕业总学分是怎么构成的？",
+          lead:"2025 级培养方案会把毕业要求拆成通识教育、学科基础、专业教育和实践环节，回答中需要同时给出总学分与各模块构成。",
+          list:["<b>适用对象</b>：2025 级计算机类本科生，需匹配对应专业方向的培养方案",
+                "<b>通识教育</b>：思政、外语、体育与通识选修等课程要求",
+                "<b>学科基础</b>：数学、程序设计、数据结构等共同基础课程",
+                "<b>专业教育</b>：专业核心课、方向课与专业选修课程",
+                "<b>实践环节</b>：课程设计、实习和毕业设计等实践要求"],
+          note:"回答会区分培养方案的结构要求与仍需核对的具体数字，避免把不同年级的口径混在一起。",
+        },
+        {
+          q:"艺术类通识选修课算不算入毕业学分？",
+          lead:"计入。通识选修课学分包含在毕业总学分内，但需满足分类最低修读要求。",
+          list:["<b>适用对象</b>：全体本科生",
+                "<b>政策依据</b>：培养方案 · 通识选修课修读说明",
+                "<b>计入</b>：通识选修课学分计入毕业总学分",
+                "<b>限制</b>：同一门课程重复修读只计一次",
+                "<b>建议</b>：选课前确认所属类别，避免修满学分但类别不达标"],
+          note:"具体分类与最低修读要求以当年级培养方案为准。",
+        },
+        {
+          q:"如果资料只覆盖了一部分，我应该向学院哪个部门确认？",
+          lead:"关于课程资料或校园政策覆盖不全的问题，建议直接向学院<b>教务办公室</b>或<b>学生工作办公室</b>咨询确认。",
+          list:["<b>教务办公室</b>：负责课程安排、政策解读与资料补充等事项",
+                "<b>学生工作办公室</b>：负责学生事务、奖助与日常管理相关事项"],
+          note:"我的回答只基于已接入的公共事务资料，超出范围的内容不会替你猜测。如果愿意，我可以帮你把问题整理得更清楚，方便你转达给对应部门。",
+        },
+        {
+          q:"蓝桥杯属于什么类型的竞赛？获奖后和课外学分是同一回事吗？",
+          lead:"蓝桥杯属于<b>学科竞赛类</b>，它带来的课外学分认定与竞赛获奖本身不是同一回事。",
+          list:["<b>适用对象</b>：全日制本科生（研究生另有认定办法）",
+                "<b>政策依据</b>：学院《课外学分认定办法》及竞赛等级目录",
+                "<b>竞赛性质</b>：全国性学科竞赛，以程序设计能力为主",
+                "<b>认定入口</b>：获奖后需按认定办法提交材料申请认定",
+                "<b>区别</b>：获奖是事实，课外学分是认定结果，两者需要分别对待"],
+          note:"不同赛事与奖项等级的认定分值不同，请查认定办法附表。",
+        }
+      ]
+    },
+    learn:{
+      word:"学习", name:"知识学习",
+      blurb:"知识问答、课程学习、笔记整理与学习计划",
+      questions:[
+        {
+          q:"请先识别《Java语言程序设计》的章节结构，再概括第6章《方法》。",
+          lead:"正式平台已从当前授权资料识别出 14 个已覆盖章节，并标记了缺失章节；下面选取资料中确实存在的第 6 章《方法》进行概括。",
+          sections:[
+            {h:"课程结构识别",list:["已覆盖：第 1—7 章、第 9—13 章、第 19 章和第 30 章","资料缺少第 8 章、第 14—18 章和第 20—29 章，平台会明确提示覆盖边界"]},
+            {h:"第 6 章《方法》",list:["从方法定义与调用开始，进入参数传递、返回值和 void 方法","继续学习方法重载、变量作用域、方法抽象与逐步求精"]},
+            {h:"课程例子",code:{lang:"Java",title:"资料示例：用方法计算最大公约数",body:"public static int gcd(int n1, int n2) {\n    while (n2 != 0) {\n        int remainder = n1 % n2;\n        n1 = n2;\n        n2 = remainder;\n    }\n    return n1;\n}"}},
+            {h:"容易混淆的地方",list:["Java 方法调用采用值传递，修改形参不会改变基本类型实参","方法重载依赖参数列表，只有返回值类型不同不能构成重载","局部变量会遮蔽同名成员变量，作用域需要明确"]}
+          ],
+          note:"以上内容来自正式平台真实链路；当前课程资料只覆盖部分章节，平台会把资料边界和课程概括分开呈现。",
+        },
+        {
+          q:"这门课主要讲什么，章节怎么排的？",
+          lead:"按课程资料，本课程共 <b>13 个教学单元</b>，主线从基础概念逐步推进到综合应用。",
+          list:["<b>第 1—4 单元</b>：基础概念与工具体系，建立整体认知",
+                "<b>第 5—9 单元</b>：核心方法与前序知识的衔接，是主要难点集中区",
+                "<b>第 10—13 单元</b>：综合应用与课程项目，需要前序内容支撑"],
+          note:"单元标题与顺序来自课程教学大纲原文；建议先过一遍标题，再按顺序进入难点单元。",
+        },
+        {
+          q:"帮我做一个 14 天冲刺复习计划",
+          lead:"按剩余 14 天、每天可投入 2 小时设定，把 13 个单元拆成三轮推进。",
+          list:["<b>第 1—5 天</b>：过完基础与核心单元，每单元配套 10 道基础题",
+                "<b>第 6—10 天</b>：攻难点单元，做历年题型归纳与错题整理",
+                "<b>第 11—14 天</b>：整套模拟 + 错题回扫，重点补薄弱单元"],
+          note:"计划节点可随时调整；复习进度与错题会记进你的学习空间，薄弱单元会被标记出来。",
+          artifact:{title:"已生成 · 14 天冲刺计划",meta:"按天排布 · 可手工调整 · 支持导出与打卡"}
+        }
+      ]
+    },
+    ppt:{
+      word:"创作", name:"PPT 制作",
+      blurb:"创作课件草稿、演示结构与视觉",
+      questions:[
+        {
+          q:"请制作一个“新学期学习与团队协作”班会 PPT。",
+          lead:"已理解需求：制作一份 10 页、用于班会的《国庆假期安全培训》PPT，并把每页的讲解重点与互动问题一起规划出来。",
+          list:["<b>第 1—3 页</b>：封面、出行准备与交通安全",
+                "<b>第 4—6 页</b>：户外活动、消防用电与网络诈骗",
+                "<b>第 7—9 页</b>：健康管理、突发情况处置与小组互动",
+                "<b>第 10 页</b>：返校提醒、班会总结与安全承诺"],
+          note:"每页会附班会讲稿、互动问题和视觉提示，方便现场讲解与课后留存。",
+          artifact:{title:"国庆假期安全培训 · 10 页方案",meta:"页面结构 · 班会讲稿 · 互动问题"}
+        },
+        {
+          q:"明天班会要用，帮我做个 10 页的",
+          lead:"按「班会 15 分钟」节奏规划为 10 页，语气更生活化，页均文字量控制在 6 行以内。",
+          list:["<b>第 1 页</b>：班会主题与时间地点",
+                "<b>第 2—4 页</b>：近期班级情况回顾，用数据与事例说明",
+                "<b>第 5—7 页</b>：下阶段安排与分工，明确到人",
+                "<b>第 8—10 页</b>：需要大家一起讨论的三个问题"],
+          note:"生成后可替换模板配色，适配学院视觉规范。",
+          artifact:{title:"PPTX 已生成 · 10 页",meta:"可编辑 · 含讲稿备注 · 支持替换模板",preview:"assets/images/mode-ppt-maker.png"}
+        },
+        {
+          q:"我想汇报一下这个项目，给个页结构",
+          lead:"按「问题—方案—结果—下一步」四段式给出 14 页结构，适合 10 分钟汇报。",
+          list:["<b>第 1—2 页</b>：背景与要解决的问题，一句话讲清痛点",
+                "<b>第 3—7 页</b>：方案与技术路线，配架构图与关键取舍",
+                "<b>第 8—11 页</b>：当前结果与数据，图示化呈现对比",
+                "<b>第 12—14 页</b>：遇到的问题、下一步计划与需要的支持"],
+          note:"每页会附讲稿备注，方便你直接照着讲；结构图与表格用可编辑的 PPT 原生元素生成，不是整页图片。",
+          artifact:{title:"PPTX 已生成 · 14 页",meta:"可编辑 · 附讲稿备注 · 结构图为原生元素",preview:"assets/images/mode-ppt-maker.png"}
+        }
+      ]
+    },
+    code:{
+      word:"实践", name:"算法练习",
+      blurb:"算法分析、Debug 与解题辅助",
+      questions:[
+        {
+          q:"请分析这道动态规划题，并给出可运行的 Python 实现。",
+          lead:"这是一道线性 DP：定义状态、写出转移方程、确定边界即可求解。",
+          sections:[
+            {h:"状态定义",list:["<code>dp[i]</code> 表示处理到第 i 个位置时的最优值"]},
+            {h:"转移方程",list:["<code>dp[i] = max(dp[i-1], dp[i-2] + a[i])</code>"]},
+            {h:"边界与复杂度",list:["边界：<code>dp[0] = a[0]</code>，<code>dp[1] = max(a[0], a[1])</code>","时间 <code>O(n)</code>，空间可优化到 <code>O(1)</code>"]},
+            {h:"参考实现",code:{lang:"Python",title:"已在沙箱运行 · 可见测试 3/3 通过",body:"def solve(a):\n    if not a:\n        return 0\n    prev2, prev1 = 0, a[0]\n    for x in a[1:]:\n        prev2, prev1 = prev1, max(prev1, prev2 + x)\n    return prev1"}}
+          ],
+          note:"运行证据：Python 3.11 · 退出码 <code>0</code> · 耗时 0.02s · 可见测试 3/3 通过。这道题也提供 C / C++ / Java 的等价实现，需要可以切换。",
+        },
+        {
+          q:"我的代码为什么会超时？",
+          lead:"从提交记录看，是双层循环导致的复杂度问题——当前解法为 <code>O(n²)</code>，需要降到 <code>O(n log n)</code>。",
+          list:["<b>定位</b>：外层遍历 n 次，内层又扫一遍剩余元素，规模到 1e5 就超时",
+                "<b>改法</b>：用排序 + 双指针替代内层扫描，整体降为 <code>O(n log n)</code>",
+                "<b>验证</b>：改后用最大规模样例实测，退出码 0、耗时 0.31s，落在时间限制内"],
+          note:"修复版已重新在沙箱跑过：最大规模样例实测退出码 0、耗时 0.31s，落在时间限制内。",
+        },
+        {
+          q:"帮我把这个算法画出来看看",
+          lead:"按你给的 6 个元素数据，把每一步的取值过程逐步画出来。",
+          list:["<b>初始</b>：<code>dp[0]=3</code>，<code>dp[1]=max(3,2)=3</code>",
+                "<b>第 3 步</b>：<code>dp[2]=max(3, 3+5)=8</code> ← 这里发生了更新",
+                "<b>第 4 步</b>：<code>dp[3]=max(8, 3+1)=8</code>",
+                "<b>结果</b>：<code>dp[5]=12</code>，路径为 3 → 5 → 4"],
+          note:"每一步的状态、变量变化与对应代码行都记在同一个实验记录里，可以暂停、回看、随时追问。",
+        }
+      ]
+    }
+  };
+
+  var stage=document.getElementById("demoStage");
+  var hero=document.getElementById("demoHero");
+  var stream=document.getElementById("demoStream");
+  var modesBox=document.getElementById("demoModes");
+  var queryBox=document.getElementById("demoText");
+  var current="public";
+  var running=false, timers=[], hasAsked=false, pendingClarify=false, lastQ="";
+
+  /* 各模式的输入提示（同一功能，四种专业工作链） */
+  var PLACEHOLDER={
+    public:"查询政策、培养方案或校园事务",
+    learn:"问课程内容、章节安排或复习计划",
+    ppt:"说清用途、页数与时长，我来出方案",
+    code:"描述题目，或粘贴你的代码"
+  };
+
+  function clearTimers(){ timers.forEach(clearTimeout); timers=[]; }
+  function later(fn,ms){ timers.push(setTimeout(fn,ms)); }
+  function esc(s){ return String(s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];}); }
+
+  /* 允许文案里的 <b>/<code> 保留，其余转义 */
+  function rich(s){
+    return String(s).replace(/&/g,"&amp;").replace(/</g,function(m,off,str){
+      return /^<\/?(b|code|br)\b/i.test(str.slice(off))?"<":"&lt;";
+    }).replace(/>/g,function(m,off,str){
+      return /^[^<]*>/.test(str.slice(off))?">":"&gt;";
+    });
+  }
+  function fmt(s){
+    // 先做安全转义（保留 <b> <code>），再补上闭合
+    s=String(s);
+    s=s.replace(/&/g,"\u0001");
+    s=s.replace(/<(?!\/?(?:b|code))[^>]*>/g,"");
+    s=s.replace(/\u0001/g,"&amp;");
+    return s;
+  }
+
+  function renderMaybe(){ return; }
+
+  /* 底部四模式对话卡：内容取自真实平台的「创建四模式对话」 */
+  function renderModeGrid(){
+    var grid=document.getElementById("demoFourModes");
+    if(!grid) return;
+    grid.innerHTML="";
+    ["public","learn","ppt","code"].forEach(function(key){
+      var d=DEMO[key];
+      var b=document.createElement("button");
+      b.type="button"; b.className="demo-four-card"+(key===current?" is-active":"");
+      b.setAttribute("data-mode",key);
+      b.innerHTML='<i class="dfc-ico"><svg class="icon" aria-hidden="true"><use href="#'+MODE_ICON[key]+'"></use></svg></i>'+
+                  '<span class="dfc-name">'+esc(d.name)+'</span>'+
+                  '<span class="dfc-blurb">'+esc(d.blurb||"")+'</span>';
+      b.addEventListener("click",function(){ switchMode(key); });
+      grid.appendChild(b);
+    });
+  }
+  var MODE_ICON={public:"i-search",learn:"i-book",ppt:"i-slides",code:"i-code"};
+
+  function switchMode(key){
+    if(!MODE_ICON[key]) return;
+    current=key;
+    modesBox.querySelectorAll(".demo-mode").forEach(function(x){
+      var on=x.getAttribute("data-mode")===key;
+      x.classList.toggle("is-active",on);
+      x.setAttribute("aria-selected",on?"true":"false");
+    });
+    clearTimers(); running=false;
+    renderModeGrid();
+    var demoFrame=document.querySelector(".demo-production-frame");
+    if(demoFrame&&demoFrame.contentWindow) demoFrame.contentWindow.postMessage({type:"edunexus-demo-mode",mode:key},"*");
+    playModeDemo(key);
+  }
+
+  function playModeDemo(key){
+    var d=DEMO[key];
+    if(!d||!d.questions||!d.questions[0]) return;
+    clearTimers();
+    running=false;
+    stream.innerHTML="";
+    hero.classList.remove("is-gone");
+    if(queryBox) queryBox.textContent=d.questions[0].q;
+    later(function(){ ask(d.questions[0].q,false); },420);
+  }
+
+  function insertQuestion(text){
+    var q=document.createElement("div");
+    q.className="dm-user"; q.textContent=text;
+    stream.appendChild(q);
+    scrollDown();
+  }
+  function scrollDown(){ requestAnimationFrame(function(){ stage.scrollTop=stage.scrollHeight; }); }
+
+  function findAnswer(mode,text){
+    var d=DEMO[mode];
+    var qs=DEMO[mode].questions;
+    var t=text.trim();
+    var hit=qs.filter(function(x){ return x.q===t; })[0];
+    if(hit) return hit;
+    var kw=(t.match(/[\u4e00-\u9fa5A-Za-z0-9]{2,}/g)||[]);
+    var best=null,score=0;
+    qs.forEach(function(x){
+      var s=0;
+      kw.forEach(function(k){ if(x.q.indexOf(k)>-1) s+=k.length; });
+      if(s>score){score=s;best=x;}
+    });
+    if(best&&score>=3) return best;
+    return {
+      q:t,
+      lead:"本次先按「"+d.name+"」的通用思路给你一条示意回答；真实平台的回答会先确认资料范围，再检索后生成。",
+      list:["<b>确认范围</b>：这一问属于「"+d.name+"」范围内的事项",
+            "<b>限定检索</b>：只在相关课程资料或校园官方文件中检索",
+            "<b>给出依据</b>：结论回到具体文件与页面，资料不足时会说明边界"],
+      note:"你可以从上方的可能问题里点一条，看到更具体的示例。"
+    };
+  }
+
+  function renderSections(box,ans){
+    if(ans.sections){
+      ans.sections.forEach(function(sec,i){
+        var h=document.createElement("div");
+        h.className="dm-h";
+        h.innerHTML='<span class="dm-num">'+ (i+1) +".</span>"+esc(sec.h);
+        box.appendChild(h);
+        if(sec.list){
+          var ul=document.createElement("ul");
+          ul.className="dm-list";
+          sec.list.forEach(function(li){
+            var el=document.createElement("li"); el.innerHTML=fmt(li); ul.appendChild(el);
+          });
+          box.appendChild(ul);
+        }
+        if(sec.code) box.appendChild(buildCode(sec.code));
+      });
+      return;
+    }
+    var p=document.createElement("p");
+    p.innerHTML=fmt(ans.lead||"");
+    box.appendChild(p);
+    if(ans.list&&ans.list.length){
+      var ul=document.createElement("ul");
+      ul.className="dm-list";
+      ans.list.forEach(function(li){
+        var el=document.createElement("li"); el.innerHTML=fmt(li); ul.appendChild(el);
+      });
+      box.appendChild(ul);
+    }
+  }
+
+  function buildCode(c){
+    var wrap=document.createElement("div");
+    wrap.className="dm-code";
+    wrap.innerHTML='<div class="dm-code-bar"><span class="dm-code-lang">'+esc(c.lang)+'</span>'+
+      '<span class="dm-code-title">'+esc(c.title)+'</span>'+
+      '<button type="button" class="dm-code-copy" aria-label="复制代码"><svg class="icon" aria-hidden="true"><use href="#i-copy"></use></svg></button></div>'+
+      '<pre><code></code></pre>';
+    var codeEl=wrap.querySelector("code");
+    // 逐行渲染，注释灰显、指令高亮
+    c.body.split("\n").forEach(function(line,i,arr){
+      var m=line.match(/^(.*?)(;.*)$/);
+      var span=document.createElement("span");
+      if(m){
+        span.innerHTML=highlight(m[1])+'<span class="c">'+esc(m[2])+'</span>';
+      }else{
+        span.innerHTML=highlight(line);
+      }
+      codeEl.appendChild(span);
+      if(i<arr.length-1) codeEl.appendChild(document.createTextNode("\n"));
+    });
+    wrap.querySelector(".dm-code-copy").addEventListener("click",function(){
+      var btn=this;
+      var txt=c.body;
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(txt).then(function(){ flashCopy(btn); },function(){ flashCopy(btn); });
+      }else{
+        var ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta);
+        ta.select(); try{document.execCommand("copy");}catch(e){} document.body.removeChild(ta);
+        flashCopy(btn);
+      }
+    });
+    return wrap;
+  }
+  function flashCopy(btn){
+    btn.innerHTML='<svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>';
+    later(function(){ btn.innerHTML='<svg class="icon" aria-hidden="true"><use href="#i-copy"></use></svg>'; },1400);
+  }
+  function highlight(s){
+    var e=esc(s);
+    e=e.replace(/\b(MOV|LEA|ADD|SUB|MUL|DIV|AND|OR|XOR|NOT|JMP|JE|CALL|RET|HLT|AX|BX|CX|DX|SP|BP|CS|DS|SS|max|min|def|for|if|not|in|return)\b/g,"<span class='k'>$1</span>");
+    return e;
+  }
+
+  function buildOps(){
+    var ops=document.createElement("div");
+    ops.className="dm-ops";
+    [["i-thumb-up","有帮助"],["i-thumb-down","没帮助"],["i-copy","复制"],["i-redo","重新生成"]].forEach(function(o){
+      var b=document.createElement("button");
+      b.type="button"; b.className="dm-op"; b.setAttribute("aria-label",o[1]); b.title=o[1];
+      b.innerHTML='<svg class="icon" aria-hidden="true"><use href="#'+o[0]+'"></use></svg>';
+      b.addEventListener("click",function(){
+        if(o[0]==="i-thumb-up"||o[0]==="i-thumb-down"){
+          ops.querySelectorAll(".dm-op").forEach(function(x){x.classList.remove("is-on");});
+          b.classList.add("is-on");
+        }
+        if(o[0]==="i-copy"){
+          var card=b.closest(".dm-agent");
+          var t=card?card.innerText:"";
+          if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).catch(function(){}); }
+          flashCopy(b);
+        }
+        if(o[0]==="i-redo"&&lastQ){ ask(lastQ,true); }
+      });
+      ops.appendChild(b);
+    });
+    return ops;
+  }
+
+  function buildClarify(onContinue){
+    var card=document.createElement("div");
+    card.className="dm-clarify";
+    card.innerHTML=
+      '<div class="dm-clarify-head"><svg class="icon" aria-hidden="true"><use href="#i-help"></use></svg>'+
+      '<div><div class="dm-clarify-title">补充一点信息后继续</div>'+
+      '<div class="dm-clarify-desc">我需要先确认本次课程问答的资料范围。请指定课程、资料组或具体课件后，我再只基于这些资料检索回答。</div></div></div>'+
+      '<div class="dm-fields">'+
+        '<div class="dm-field"><label>courseId</label><input type="text" data-f="courseId" placeholder="请填写"></div>'+
+        '<div class="dm-field"><label>materialGroupIds</label><input type="text" data-f="materialGroupIds" placeholder="请填写"></div>'+
+        '<div class="dm-field"><label>materialIds</label><input type="text" data-f="materialIds" placeholder="请填写"></div>'+
+      '</div>'+
+      '<div class="dm-clarify-foot"><button type="button" class="dm-continue">继续刚才的任务<svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></button></div>';
+    card.querySelector(".dm-continue").addEventListener("click",function(){
+      card.remove();
+      onContinue();
+    });
+    return card;
+  }
+
+  function buildArtifact(a){
+    var el=document.createElement("div");
+    el.className="dm-artifact";
+    el.innerHTML='<div class="dm-artifact-head"><svg class="icon" aria-hidden="true"><use href="#i-layers"></use></svg>'+esc(a.title)+'</div>'+
+      '<div class="dm-artifact-meta">'+esc(a.meta)+'</div>'+
+      '<div class="dm-artifact-bar"><i></i></div>'+
+      '<div class="dm-artifact-actions"><button type="button" class="dm-artifact-go"><svg class="icon" aria-hidden="true"><use href="#i-image"></use></svg>预览成品效果</button>'+(a.download?'<a class="dm-artifact-go dm-artifact-download" href="'+esc(a.download)+'" download><svg class="icon" aria-hidden="true"><use href="#i-doc"></use></svg>下载真实 PPTX</a>':'')+'</div>';
+    later(function(){ el.querySelector(".dm-artifact-bar i").style.width="100%"; },80);
+    el.querySelector(".dm-artifact-go").addEventListener("click",function(){
+      openArtifactPreview(a);
+    });
+    return el;
+  }
+
+  function openArtifactPreview(a){
+    var modal=document.getElementById("demoPreviewModal");
+    if(!modal){
+      modal=document.createElement("div");
+      modal.id="demoPreviewModal";
+      modal.className="demo-preview-modal";
+      modal.innerHTML='<div class="demo-preview-backdrop" data-close-preview></div>'+
+        '<div class="demo-preview-dialog" role="dialog" aria-modal="true" aria-labelledby="demoPreviewTitle">'+
+          '<div class="demo-preview-head"><div><span class="demo-preview-kicker">PPT 制作 · 成品预览</span><h3 id="demoPreviewTitle"></h3></div>'+
+          '<button type="button" class="demo-preview-close" aria-label="关闭预览" data-close-preview><svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg></button></div>'+
+          '<div class="demo-preview-body"><img alt="PPT 成品预览"></div>'+
+          '<p class="demo-preview-note"></p>'+
+        '</div>';
+      document.body.appendChild(modal);
+      modal.querySelectorAll("[data-close-preview]").forEach(function(x){x.addEventListener("click",function(){modal.classList.remove("is-open");});});
+      document.addEventListener("keydown",function(e){if(e.key==="Escape") modal.classList.remove("is-open");});
+    }
+    modal.querySelector("#demoPreviewTitle").textContent=a.title||"PPT 成品预览";
+    modal.querySelector("img").src=a.preview||"assets/images/mode-ppt-maker.png";
+    modal.querySelector(".demo-preview-note").textContent=a.note||"当前展示为产品主页演示素材。";
+    modal.classList.add("is-open");
+  }
+
+  function renderAnswer(mode,ans,opts){
+    opts=opts||{};
+    var el=document.createElement("div");
+    el.className="dm-agent";
+    // 续跑（补充信息后）：接在同一轮里，不重复执行检索提示
+    var resumed=!!opts.resumed;
+    el.innerHTML=resumed?'<div class="dm-text"></div>':'<div class="dm-status"></div><div class="dm-text"></div>';
+    if(resumed) el.classList.add("is-resume");
+    stream.appendChild(el);
+    scrollDown();
+
+    // 真实平台：检索时只显示一行带秒数的进度提示，回答完成后即消失
+    var stBox=el.querySelector(".dm-status");
+    if(stBox){
+      stBox.innerHTML='<span class="dm-status-spin" aria-hidden="true"></span>'+
+        '<span class="dm-status-text">正在理解你的问题并查找相关资料</span>'+
+        '<span class="dm-status-time">0.0s</span>';
+      var t0=Date.now();
+      var tk=setInterval(function(){
+        var t=stBox.querySelector(".dm-status-time");
+        if(t) t.textContent=((Date.now()-t0)/1000).toFixed(1)+"s";
+      },100);
+      timers.push(tk);
+    }
+
+    var delay=resumed?380:1180;
+
+    later(function(){
+      var txt=el.querySelector(".dm-text");
+      txt.innerHTML='<span class="dm-typing"><i></i><i></i><i></i></span>';
+      scrollDown();
+      later(function(){
+        txt.innerHTML="";
+        // 回答开始输出，检索提示退场（与真实平台一致）
+        if(stBox){
+          var t=stBox.querySelector(".dm-status-time");
+          if(t) t.textContent=((Date.now()-t0)/1000).toFixed(1)+"s";
+          stBox.classList.add("is-out");
+          later(function(){ if(stBox.parentNode) stBox.parentNode.removeChild(stBox); },260);
+        }
+        if(opts.clarifyFirst){
+          // 需求不明确：先声明边界，再抬出补充信息卡
+          var p=document.createElement("p");
+          p.innerHTML=fmt("我需要先确认本次课程问答的资料范围。请指定课程、资料组或具体课件后，我再只基于这些资料检索回答。");
+          txt.appendChild(p);
+          el.appendChild(buildOps());
+          var card=buildClarify(function(){
+            pendingClarify=false;
+            renderAnswer(mode,ans,{resumed:true});
+          });
+          el.appendChild(card);
+          scrollDown();
+          running=false;
+          return;
+        }
+        renderSections(txt,ans);
+        if(ans.note){
+          var n=document.createElement("div");
+          n.className="dm-note"; n.innerHTML=fmt(ans.note);
+          txt.appendChild(n);
+        }
+        if(ans.code&&!ans.sections){
+          txt.appendChild(buildCode(ans.code));
+        }
+        if(ans.artifact) el.appendChild(buildArtifact(ans.artifact));
+        el.appendChild(buildOps());
+        scrollDown();
+        running=false;
+      },opts.resumed?520:760);
+    },delay);
+  }
+
+  function preferClarify(text){
+    // 真实产品：课程问答的资料范围不明确时，先要求补充范围
+    if(current!=="learn") return false;
+    var t=text.trim();
+    var generic=/^(?:请|帮我|帮忙)?(?:基于|根据|按照)?(?:当前|本|这门)?(?:课程|课件|资料)?(?:资料|内容)?[，,。]*(?:解释|讲|讲一下|梳理|总结|概括)/;
+    // 命中预置问题则直接回答；否则若是宽泛提问，走补充信息流程
+    var exact=DEMO.learn.questions.some(function(x){return x.q===t;});
+    if(exact) return false;
+    return generic.test(t)||/资料|课件|课程资料/.test(t)&&t.length<26;
+  }
+
+  function ask(text,isRedo){
+    if(running) return;
+    var v=String(text||"").trim();
+    if(!v) return;
+    running=true;
+    clearTimers();
+    lastQ=v;
+    if(queryBox) queryBox.textContent=v;
+    if(!isRedo){
+      hero.classList.add("is-gone");
+      hasAsked=true;
+      insertQuestion(v);
+    }
+    var delay=isRedo?120:340;
+
+    later(function(){
+      var ans,opts={};
+      if(!isRedo&&preferClarify(v)){
+        opts.clarifyFirst=true;
+        ans=findAnswer(current,v);
+      }else{
+        ans=findAnswer(current,v);
+      }
+      renderAnswer(current,ans,opts);
+    },delay);
+  }
+
+  /* 模式切换（输入区四个模式 与 底部四模式卡 共用） */
+  modesBox.addEventListener("click",function(e){
+    var btn=e.target.closest(".demo-mode");
+    if(!btn||btn.classList.contains("is-active")) return;
+    switchMode(btn.getAttribute("data-mode"));
+  });
+
+  /* 体验预览：初始化后自动播放公共事务案例，访客可切换模式 */
+  renderModeGrid();
+  playModeDemo("public");
+})();
+</script>
+
+<!-- 截图占位样式（内联在 body 尾部，保证单文件自包含） -->
+<style>
+[data-shot]{position:relative;background:
+  linear-gradient(135deg,#F4F9F7 0%,#EAF4F0 100%);min-height:180px;display:block}
+[data-shot].is-missing{display:flex;align-items:center;justify-content:center}
+.shot-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:26px 22px;border:1px dashed #BCD9D1;border-radius:12px;margin:12px;background:rgba(255,255,255,.6)}
+.shot-ph-icon{width:44px;height:44px;border-radius:12px;background:var(--brand-soft);display:grid;place-items:center;color:var(--brand-deep);flex:none}
+.shot-ph-icon .icon{width:24px;height:24px}
+.shot-ph b{font-size:14.5px;color:var(--ink);font-weight:700;line-height:1.4}
+.shot-ph-meta{font-size:12.5px;color:var(--ink-faint);max-width:34ch;line-height:1.6}
+/* 未失败时隐藏占位（默认无图时由 JS 注入） */
+[data-shot]:not(.is-missing)>.shot-ph{display:none}
+.demo-preview-modal{position:fixed;inset:0;z-index:50;display:none;place-items:center;padding:24px}
+.demo-preview-modal.is-open{display:grid}
+.demo-preview-backdrop{position:absolute;inset:0;background:rgba(19,38,59,.42);backdrop-filter:blur(7px)}
+.demo-preview-dialog{position:relative;width:min(860px,100%);max-height:min(86vh,760px);overflow:auto;background:#fff;border:1px solid rgba(255,255,255,.75);border-radius:20px;box-shadow:0 28px 80px rgba(19,38,59,.25);padding:22px}
+.demo-preview-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:16px}
+.demo-preview-kicker{display:block;font-size:11px;letter-spacing:.14em;color:var(--brand-deep);font-weight:700;text-transform:uppercase;margin-bottom:7px}
+.demo-preview-head h3{font-family:var(--font-display);font-size:1.25rem;line-height:1.3;color:var(--ink)}
+.demo-preview-close{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink-soft);cursor:pointer}
+.demo-preview-close:hover{border-color:#A9DCCF;color:var(--brand-deep);background:var(--brand-soft)}
+.demo-preview-close .icon{width:16px;height:16px}
+.demo-preview-body{border:1px solid var(--line);border-radius:13px;background:#F5F9F8;padding:10px;overflow:hidden}
+.demo-preview-body img{display:block;width:100%;height:auto;border-radius:8px}
+.demo-preview-note{font-size:12px;line-height:1.6;color:var(--ink-faint);margin:12px 2px 0}
+@media(max-width:620px){.demo-preview-modal{padding:12px}.demo-preview-dialog{padding:15px;border-radius:16px}.demo-readonly-query{align-items:flex-start}.demo-auto-tag{display:none}.demo-readonly-copy strong{white-space:normal}.demo-tools-note{display:none}.demo-modes{width:100%;justify-content:space-between}.demo-mode{flex:1;justify-content:center;padding:7px 8px}.demo-mode span{font-size:12px}}
+</style>
+
+
+
+
+<script>
+(function(){
+  var frame=document.querySelector('[data-platform-window]'); var source=document.querySelector('[data-showcase-app]');
+  if(!frame||!source) return;
+  source.style.display='none';
+  frame.classList.add('is-ready');
+})();
+</script>
+<script>window.__EDUNEXUS_VERSION__='homepage-showcase';</script>
+</body></html>
